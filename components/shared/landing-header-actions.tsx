@@ -92,7 +92,7 @@ export function LandingHeaderActions({
           <span className="sm:hidden">Se connecter</span>
         </Button>
       </Link>
-      <Link href="/signup">
+      <Link href="/register">
         <Button size="sm" className="px-3 sm:px-4">
           <span className="hidden sm:inline">Commencer</span>
           <span className="sm:hidden">Démarrer</span>

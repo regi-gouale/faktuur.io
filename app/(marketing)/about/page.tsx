@@ -348,7 +348,7 @@ export default function AboutPage() {
               className="space-y-6"
             />
             <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Link href="/signup" className="w-full sm:w-auto">
+              <Link href="/register" className="w-full sm:w-auto">
                 <Button size="lg" className="w-full gap-2 text-base">
                   Commencer gratuitement
                   <ArrowRight className="size-5" />
