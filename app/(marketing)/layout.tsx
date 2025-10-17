@@ -1,12 +1,8 @@
 import { StructuredData } from "@/components/seo/structured-data";
-import { LandingHeaderActions } from "@/components/shared/landing-header-actions";
+import { HeaderActionsServer } from "@/components/shared/header-actions-server";
 import { MobileNav } from "@/components/shared/mobile-nav";
 import { SiteFooter } from "@/components/shared/site-footer";
-import { auth } from "@/lib/auth";
-import { getUserFirstOrganizationSlug } from "@/lib/dal/organization";
-import { validatePublicUser } from "@/lib/schemas/user";
 import { IconFileInvoice } from "@tabler/icons-react";
-import { headers } from "next/headers";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -20,32 +16,13 @@ interface MarketingLayoutProps {
   readonly children: ReactNode;
 }
 
+// ✅ Static generation: pages are prerendered at build time
+// User session will be hydrated client-side if needed
+export const revalidate = false; // Static: never revalidate
+
 export default async function MarketingLayout({
   children,
 }: MarketingLayoutProps) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  let orgSlug: string | undefined;
-  if (session?.user?.id) {
-    orgSlug = await getUserFirstOrganizationSlug(session.user.id);
-  }
-
-  // Valider les données utilisateur avant utilisation
-  const validatedUser =
-    session?.user && "email" in session.user && "name" in session.user
-      ? validatePublicUser({
-          name: session.user.name,
-          email: session.user.email,
-          image: session.user.image ?? undefined,
-        })
-      : null;
-
-  // En cas d'erreur de validation, on retourne null pour la sécurité
-  const userProps =
-    validatedUser && "error" in validatedUser ? null : validatedUser;
-
   return (
     <>
       <StructuredData />
@@ -90,10 +67,7 @@ export default async function MarketingLayout({
 
             {/* Right side actions */}
             <div className="flex items-center gap-2">
-              <LandingHeaderActions
-                user={userProps || null}
-                orgSlug={orgSlug}
-              />
+              <HeaderActionsServer user={null} />
               {/* Mobile Navigation */}
               <MobileNav navLinks={navLinks} />
             </div>
