@@ -102,6 +102,7 @@ model Member {
   role           String
   createdAt      DateTime
 
+  @@index([userId, createdAt])
   @@map("member")
 }
 
