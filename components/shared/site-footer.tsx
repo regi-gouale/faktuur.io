@@ -25,11 +25,9 @@ export function SiteFooter() {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="flex size-9 items-center justify-center rounded-xl border border-primary/30 bg-primary/10 text-primary">
-                <IconInvoice className="size-5" />
-              </div>
-              <span className="text-lg font-semibold text-foreground">
+            <Link href="/" className="flex items-center gap-2 text-primary">
+              <IconInvoice className="size-6" />
+              <span className="text-lg font-semibold text-primary">
                 faktuur.io
               </span>
             </Link>
