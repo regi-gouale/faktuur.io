@@ -3,7 +3,8 @@ import { LandingHeaderActions } from "@/components/shared/landing-header-actions
 import { MobileNav } from "@/components/shared/mobile-nav";
 import { SiteFooter } from "@/components/shared/site-footer";
 import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { getUserFirstOrganizationSlug } from "@/lib/dal/organization";
+import { validatePublicUser } from "@/lib/schemas/user";
 import { IconFileInvoice } from "@tabler/icons-react";
 import { headers } from "next/headers";
 import Link from "next/link";
@@ -28,13 +29,22 @@ export default async function MarketingLayout({
 
   let orgSlug: string | undefined;
   if (session?.user?.id) {
-    const membership = await prisma.member.findFirst({
-      where: { userId: session.user.id },
-      include: { organization: true },
-      orderBy: { createdAt: "asc" },
-    });
-    orgSlug = membership?.organization?.slug ?? undefined;
+    orgSlug = await getUserFirstOrganizationSlug(session.user.id);
   }
+
+  // Valider les données utilisateur avant utilisation
+  const validatedUser =
+    session?.user && "email" in session.user && "name" in session.user
+      ? validatePublicUser({
+          name: session.user.name,
+          email: session.user.email,
+          image: session.user.image ?? undefined,
+        })
+      : null;
+
+  // En cas d'erreur de validation, on retourne null pour la sécurité
+  const userProps =
+    validatedUser && "error" in validatedUser ? null : validatedUser;
 
   return (
     <>
@@ -81,15 +91,7 @@ export default async function MarketingLayout({
             {/* Right side actions */}
             <div className="flex items-center gap-2">
               <LandingHeaderActions
-                user={
-                  session?.user
-                    ? {
-                        name: session.user.name,
-                        email: session.user.email,
-                        image: session.user.image ?? undefined,
-                      }
-                    : null
-                }
+                user={userProps || null}
                 orgSlug={orgSlug}
               />
               {/* Mobile Navigation */}
