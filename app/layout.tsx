@@ -41,16 +41,16 @@ export const metadata: Metadata = {
     "facturation conforme",
     "gestion clients",
   ],
-  authors: [{ name: "Solide Cotizoo" }],
-  creator: "Solide Cotizoo",
-  publisher: "Solide Cotizoo",
+  authors: [{ name: "faktuur.io" }],
+  creator: "faktuur.io",
+  publisher: "faktuur.io",
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL || "https://solide.cotizoo.com"
+    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
   ),
   alternates: {
     canonical: "/",
@@ -59,8 +59,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "fr_FR",
     url: "/",
-    siteName: "Solide Cotizoo",
-    title: "Solide Cotizoo - Logiciel de facturation pour freelances",
+    siteName: "faktuur.io",
+    title: "faktuur.io - Logiciel de facturation pour freelances",
     description:
       "Créez et gérez vos devis et factures en ligne. Simple, rapide et conforme à la réglementation française.",
     images: [
@@ -68,17 +68,17 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Solide Cotizoo - Logiciel de facturation",
+        alt: "faktuur.io - Logiciel de facturation",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Solide Cotizoo - Logiciel de facturation pour freelances",
+    title: "faktuur.io - Logiciel de facturation pour freelances",
     description:
       "Créez et gérez vos devis et factures en ligne. Simple, rapide et conforme.",
     images: ["/og-image.png"],
-    creator: "@solidecotizoo",
+    creator: "@faktuur_io",
   },
   robots: {
     index: true,
@@ -114,7 +114,22 @@ export default function RootLayout({
         >
           <ReactQueryProvider>
             <NuqsAdapter>
-              <main className="min-h-screen w-full bg-background text-foreground">
+              <main className="min-h-screen w-full relative bg-background text-foreground">
+                <div
+                  className="absolute inset-0 z-0 pointer-events-none dark:hidden"
+                  style={{
+                    backgroundImage: `
+             radial-gradient(circle at center, #c4b5fd, transparent)
+           `,
+                  }}
+                />
+
+                <div
+                  className="absolute inset-0 z-0 hidden dark:block"
+                  style={{
+                    backgroundImage: `radial-gradient(circle 500px at 50% 100px, rgba(139,92,246,0.4), transparent)`,
+                  }}
+                />
                 {children}
               </main>
             </NuqsAdapter>

@@ -1,3 +1,8 @@
 {
-  "files.autoSave": "onFocusChange"
+  "files.autoSave": "onFocusChange",
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "text": "# Instructions pour GitHub Copilot – Commits\nConventionnels avec Icônes\n## Format général\n- Structure du titre : `<emoji> type(scope facultatif): résumé concis`.\n- Limiter le résumé à 72 caractères.\n- Capitalisation en minuscules, pas de point final.\n- Ajouter une ligne vide, puis détailler les changements si nécessaire.\n- Chaque paragraphe de description ≤ 72 caractères par ligne.\n- Inclure les références (issues, tickets) en fin de message.\n\n## Types supportés et icônes\n\n- ✨ `feat` : nouvelles fonctionnalités.\n- 🐛 `fix` : corrections d’anomalies.\n- 📚 `docs` : documentation.\n- 🛠️ `chore` : tâches de maintenance (build, deps, configs...).\n- 🧪 `test` : création ou mise à jour de tests.\n- ♻️ `refactor` : refactorisations sans changement fonctionnel.\n- ⚡ `perf` : améliorations de performance.\n- 🎨 `style` : changements de style/formatage sans logique.\n- 🚨 `ci` : pipelines CI/CD.\n- 🔒 `security` : corrections de vulnérabilités.\n- 🔁 `revert` : annulation d’un commit précédent.\n\n## Règles supplémentaires\n\n- Utiliser un seul type par commit.\n- Employer un scope court entre parenthèses si pertinent (`feat(auth): ...`).\n- Préférer l’impératif dans le résumé (`ajoute`, `corrige`, `refactore`...).\n- Lister les breaking changes en fin de message sous `BREAKING CHANGE:`.\n- Mentionner les co-auteurs avec `Co-authored-by:` le cas échéant."
+    }
+  ]
 }
