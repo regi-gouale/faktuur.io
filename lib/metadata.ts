@@ -47,7 +47,7 @@ export function buildMarketingMetadata(
       title: overrides?.title ?? TITLE,
       description: overrides?.description ?? DESCRIPTION,
       images: ["/og-image.png"],
-      creator: "@solidecotizoo",
+      creator: "@faktuur_io",
       ...overrides?.twitter,
     },
   };

@@ -45,12 +45,12 @@ export function StructuredData() {
     author: {
       "@type": "Organization",
       name: "faktuur.io",
-      url: process.env.NEXT_PUBLIC_APP_URL || "https://solide-cotizoo.com",
+      url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
     },
     provider: {
       "@type": "Organization",
       name: "faktuur.io",
-      url: process.env.NEXT_PUBLIC_APP_URL || "https://solide-cotizoo.com",
+      url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
     },
   };
 
@@ -58,22 +58,22 @@ export function StructuredData() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "faktuur.io",
-    url: process.env.NEXT_PUBLIC_APP_URL || "https://solide-cotizoo.com",
+    url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
     logo: `${
-      process.env.NEXT_PUBLIC_APP_URL || "https://solide-cotizoo.com"
+      process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
     }/logo.png`,
     description:
       "Solution de facturation en ligne pour les freelances et auto-entrepreneurs français",
     foundingDate: "2023",
     sameAs: [
-      "https://twitter.com/solidecotizoo",
-      "https://linkedin.com/company/solidecotizoo",
-      "https://facebook.com/solidecotizoo",
+      "https://twitter.com/faktuur_io",
+      "https://linkedin.com/company/faktuur-io",
+      "https://facebook.com/faktuur.io",
     ],
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "Customer Support",
-      email: "support@solide-cotizoo.com",
+      email: "support@faktuur.io",
       availableLanguage: ["French"],
     },
   };
@@ -86,7 +86,7 @@ export function StructuredData() {
         "@type": "ListItem",
         position: 1,
         name: "Accueil",
-        item: process.env.NEXT_PUBLIC_APP_URL || "https://solide-cotizoo.com",
+        item: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
       },
     ],
   };

@@ -5,10 +5,18 @@ import { LandingHeaderActions } from "@/components/shared/landing-header-actions
 import { SiteFooter } from "@/components/shared/site-footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { auth } from "@/lib/auth";
 import { marketingMetadata } from "@/lib/metadata";
 import { prisma } from "@/lib/prisma";
-import { IconInvoice } from "@tabler/icons-react";
+import { IconFileInvoice } from "@tabler/icons-react";
 import type { LucideIcon } from "lucide-react";
 import {
   ArrowRight,
@@ -77,7 +85,7 @@ const featureCards = [
   {
     title: "Sécurité by design",
     description:
-      "Données chiffrées, conformité RGPD et authentification forte grâce à Better Auth.",
+      "Données chiffrées, conformité RGPD et authentification forte.",
     badge: "Conformité RGPD",
     icon: ShieldCheck,
   },
@@ -137,11 +145,11 @@ export default async function Home() {
         <header className="sticky top-0 z-50 border-b border-border/80 bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="container mx-auto flex h-16 items-center justify-between px-4 lg:px-8">
             <Link href="/" className="group flex items-center gap-2">
-              <div className="flex size-9 items-center justify-center rounded-xl border border-primary/30 bg-primary/10 text-primary transition group-hover:bg-primary/15">
-                <IconInvoice className="size-5" />
-              </div>
+              <IconFileInvoice className="size-8 text-primary" />
               <div className="flex flex-col leading-tight">
-                <span className="text-lg font-semibold">faktuur.io</span>
+                <span className="text-lg font-semibold text-primary">
+                  faktuur.io
+                </span>
                 <span className="text-xs font-medium text-muted-foreground">
                   Facturation moderne pour freelances
                 </span>
@@ -175,7 +183,6 @@ export default async function Home() {
 
         <main className="flex-1">
           <section className="relative overflow-hidden">
-            <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-primary/10 via-transparent to-transparent dark:from-primary/15" />
             <div className="container mx-auto flex flex-col items-center gap-12 px-4 pb-24 pt-24 text-center md:pb-32 md:pt-32 lg:px-8">
               <SectionIntro
                 eyebrow={{
@@ -220,7 +227,6 @@ export default async function Home() {
             id="features"
             className="relative border-t border-border/80 bg-muted/40 py-24"
           >
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background via-muted/40 to-transparent" />
             <div className="container mx-auto px-4 lg:px-8">
               <SectionIntro
                 title="Une stack complète pour votre gestion commerciale"
@@ -229,39 +235,42 @@ export default async function Home() {
               />
               <div className="mt-16 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
                 {featureCards.map((feature) => (
-                  <div
+                  <Card
+                    className="group relative flex flex-col overflow-hidden border border-border/80 bg-background/90 p-6 shadow-sm shadow-primary/5 transition duration-300 hover:-translate-y-1 hover:border-primary/60 hover:shadow-lg hover:shadow-primary/10"
                     key={feature.title}
-                    className="group relative flex flex-col overflow-hidden rounded-2xl border border-border/80 bg-background/90 p-6 shadow-sm shadow-primary/5 transition duration-300 hover:-translate-y-1 hover:border-primary/60 hover:shadow-lg hover:shadow-primary/10"
                   >
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full border border-primary/30 bg-primary/10 text-primary transition group-hover:border-primary/50 group-hover:bg-primary/15">
-                      <feature.icon className="size-5" />
-                    </div>
-                    <div className="mt-6 space-y-3">
-                      <Badge
-                        variant="outline"
-                        className="w-fit rounded-full border-border/80 bg-background/80 text-xs font-medium uppercase tracking-wide text-muted-foreground/90"
-                      >
-                        {feature.badge}
-                      </Badge>
-                      <h3 className="text-xl font-semibold text-foreground">
+                    <CardHeader>
+                      <div className="flex justify-between">
+                        <div className="flex size-12 items-center justify-center rounded-full border border-primary/30 bg-primary/10 text-primary transition group-hover:border-primary/50 group-hover:bg-primary/15">
+                          <feature.icon className="size-6" />
+                        </div>
+                        <Badge
+                          variant="outline"
+                          className="w-fit rounded-full border-border/80 bg-background/80 text-xs font-medium uppercase tracking-wide text-muted-foreground/90"
+                        >
+                          {feature.badge}
+                        </Badge>
+                      </div>
+                      <CardTitle className="text-xl font-semibold text-foreground">
                         {feature.title}
-                      </h3>
-                      <p className="text-sm leading-6 text-muted-foreground">
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription className="text-sm leading-6 text-muted-foreground">
                         {feature.description}
-                      </p>
-                    </div>
-                    <div className="mt-6 flex items-center gap-2 text-sm font-medium text-primary opacity-0 transition group-hover:opacity-100">
+                      </CardDescription>
+                    </CardContent>
+                    <CardFooter className="mt-6 flex items-center gap-2 text-sm font-medium text-primary opacity-0 transition group-hover:opacity-100">
                       En savoir plus
                       <ArrowRight className="size-4" />
-                    </div>
-                  </div>
+                    </CardFooter>
+                  </Card>
                 ))}
               </div>
             </div>
           </section>
 
           <section className="relative py-24">
-            <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-muted/40 via-background to-transparent" />
             <div className="container mx-auto grid gap-12 px-4 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:px-8">
               <div className="flex flex-col gap-6">
                 <SectionIntro
@@ -299,7 +308,6 @@ export default async function Home() {
                 </div>
               </div>
               <div className="relative flex items-center justify-center">
-                <div className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-primary/10 via-transparent to-transparent blur-3xl" />
                 <div className="w-full max-w-md rounded-3xl border border-border/60 bg-background/80 p-6 shadow-xl shadow-primary/10 backdrop-blur">
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium text-muted-foreground">
