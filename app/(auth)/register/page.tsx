@@ -3,11 +3,10 @@ import {
   RegisterForm,
   RegisterFormFallback,
 } from "@/components/auth/register-form";
-import { auth } from "@/lib/auth";
 import { Sparkles } from "lucide-react";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 import { Suspense } from "react";
+
+export const revalidate = false;
 
 const SignupPageFallback = () => {
   return (
@@ -25,15 +24,7 @@ const SignupPageFallback = () => {
   );
 };
 
-export default async function SignupPage() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  if (session) {
-    redirect("/");
-  }
-
+export default function SignupPage() {
   return (
     <Suspense fallback={<SignupPageFallback />}>
       <AuthShell

@@ -1,10 +1,9 @@
 import { AuthShell } from "@/components/auth/auth-shell";
 import { LoginForm, LoginFormFallback } from "@/components/auth/login-form";
-import { auth } from "@/lib/auth";
 import { Sparkles } from "lucide-react";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 import { Suspense } from "react";
+
+export const revalidate = false;
 
 const LoginPageFallback = () => {
   return (
@@ -23,14 +22,7 @@ const LoginPageFallback = () => {
   );
 };
 
-export default async function LoginPage() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  if (session) {
-    redirect("/");
-  }
+export default function LoginPage() {
   return (
     <Suspense fallback={<LoginPageFallback />}>
       <AuthShell
