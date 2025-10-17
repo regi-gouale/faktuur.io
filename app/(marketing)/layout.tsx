@@ -16,8 +16,6 @@ interface MarketingLayoutProps {
   readonly children: ReactNode;
 }
 
-// ✅ Static generation: pages are prerendered at build time
-// User session will be hydrated client-side if needed
 export const revalidate = false; // Static: never revalidate
 
 export default async function MarketingLayout({
