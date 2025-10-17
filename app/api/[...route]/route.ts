@@ -1,3 +1,4 @@
+import emailRouter from "@/api/routes/email";
 import { auth } from "@/lib/auth";
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
@@ -28,6 +29,8 @@ app.use("*", async (c, next) => {
 app.on(["POST", "GET"], "/auth/*", (c) => {
   return auth.handler(c.req.raw);
 });
+
+app.route("/email", emailRouter);
 
 app.get("/session", (c) => {
   const session = c.get("session");
