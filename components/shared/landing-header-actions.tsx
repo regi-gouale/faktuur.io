@@ -29,8 +29,11 @@ export function LandingHeaderActions({
   // Si l'utilisateur est connecté
   if (user) {
     return (
-      <div className="flex items-center gap-4">
-        <Link href={orgSlug ? `/dashboard/${orgSlug}` : "/dashboard"}>
+      <div className="flex items-center gap-2 sm:gap-4">
+        <Link
+          href={orgSlug ? `/dashboard/${orgSlug}` : "/dashboard"}
+          className="hidden sm:block"
+        >
           <Button variant="outline" size="sm">
             Accéder à l&apos;application
             <ArrowRight className="ml-2 size-4" />
@@ -41,11 +44,11 @@ export function LandingHeaderActions({
             <Button
               variant="ghost"
               size="sm"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 px-2 sm:px-3"
             >
-              <Avatar className="size-8">
+              <Avatar className="size-7 sm:size-8">
                 <AvatarImage src={user.image} alt={user.name} />
-                <AvatarFallback>
+                <AvatarFallback className="text-xs sm:text-sm">
                   {user.name
                     .split(" ")
                     .map((n) => n[0])
@@ -82,16 +85,18 @@ export function LandingHeaderActions({
 
   // Si l'utilisateur n'est pas connecté
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-2 sm:gap-4">
       <Link href="/login">
-        <Button variant="ghost" size="sm">
-          Connexion
+        <Button variant="ghost" size="sm" className="px-3 sm:px-4">
+          <span className="hidden sm:inline">Connexion</span>
+          <span className="sm:hidden">Se connecter</span>
         </Button>
       </Link>
       <Link href="/signup">
-        <Button size="sm">
-          Commencer
-          <ArrowRight className="ml-2 size-4" />
+        <Button size="sm" className="px-3 sm:px-4">
+          <span className="hidden sm:inline">Commencer</span>
+          <span className="sm:hidden">Démarrer</span>
+          <ArrowRight className="ml-1 sm:ml-2 size-3 sm:size-4" />
         </Button>
       </Link>
     </div>

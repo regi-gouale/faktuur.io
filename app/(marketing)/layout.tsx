@@ -1,5 +1,6 @@
 import { StructuredData } from "@/components/seo/structured-data";
 import { LandingHeaderActions } from "@/components/shared/landing-header-actions";
+import { MobileNav } from "@/components/shared/mobile-nav";
 import { SiteFooter } from "@/components/shared/site-footer";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -42,19 +43,30 @@ export default async function MarketingLayout({
         <div className="pointer-events-none absolute inset-x-0 -top-40 h-[500px] bg-[radial-gradient(circle_at_top,_theme(colors.primary/20),_transparent_60%)] dark:bg-[radial-gradient(circle_at_top,_theme(colors.primary/15),_transparent_60%)]" />
 
         <header className="sticky top-0 z-50 border-b border-border/80 bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="container mx-auto flex h-16 items-center justify-between px-4 lg:px-8">
-            <Link href="/" className="group flex items-center gap-2">
+          <div className="container mx-auto flex h-16 items-center justify-between gap-4 px-4 lg:px-8">
+            {/* Logo */}
+            <Link
+              href="/"
+              className="group flex flex-shrink-0 items-center gap-2"
+            >
               <IconFileInvoice className="size-8 text-primary" />
-              <div className="flex flex-col leading-tight">
+              <div className="hidden flex-col leading-tight sm:flex">
                 <span className="text-lg font-semibold text-primary">
                   faktuur.io
                 </span>
                 <span className="text-xs font-medium text-muted-foreground">
-                  Facturation moderne pour freelances
+                  Facturation moderne
+                </span>
+              </div>
+              <div className="flex flex-col leading-tight sm:hidden">
+                <span className="text-lg font-semibold text-primary">
+                  faktuur.io
                 </span>
               </div>
             </Link>
-            <nav className="hidden items-center gap-6 md:flex">
+
+            {/* Desktop Navigation */}
+            <nav className="hidden items-center gap-8 md:flex">
               {navLinks.map((item) => (
                 <Link
                   key={item.href}
@@ -65,18 +77,24 @@ export default async function MarketingLayout({
                 </Link>
               ))}
             </nav>
-            <LandingHeaderActions
-              user={
-                session?.user
-                  ? {
-                      name: session.user.name,
-                      email: session.user.email,
-                      image: session.user.image ?? undefined,
-                    }
-                  : null
-              }
-              orgSlug={orgSlug}
-            />
+
+            {/* Right side actions */}
+            <div className="flex items-center gap-2">
+              <LandingHeaderActions
+                user={
+                  session?.user
+                    ? {
+                        name: session.user.name,
+                        email: session.user.email,
+                        image: session.user.image ?? undefined,
+                      }
+                    : null
+                }
+                orgSlug={orgSlug}
+              />
+              {/* Mobile Navigation */}
+              <MobileNav navLinks={navLinks} />
+            </div>
           </div>
         </header>
         <main className="flex-1">{children}</main>

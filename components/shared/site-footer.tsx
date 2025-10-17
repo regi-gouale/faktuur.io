@@ -1,4 +1,4 @@
-import { IconInvoice } from "@tabler/icons-react";
+import { IconFileInvoice } from "@tabler/icons-react";
 import Link from "next/link";
 
 const footerLinks = {
@@ -26,7 +26,7 @@ export function SiteFooter() {
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-2 text-primary">
-              <IconInvoice className="size-6" />
+              <IconFileInvoice className="size-6" />
               <span className="text-lg font-semibold text-primary">
                 faktuur.io
               </span>
