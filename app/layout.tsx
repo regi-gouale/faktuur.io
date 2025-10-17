@@ -41,9 +41,9 @@ export const metadata: Metadata = {
     "facturation conforme",
     "gestion clients",
   ],
-  authors: [{ name: "Solide Cotizoo" }],
-  creator: "Solide Cotizoo",
-  publisher: "Solide Cotizoo",
+  authors: [{ name: "faktuur.io" }],
+  creator: "faktuur.io",
+  publisher: "faktuur.io",
   formatDetection: {
     email: false,
     address: false,
@@ -59,8 +59,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "fr_FR",
     url: "/",
-    siteName: "Solide Cotizoo",
-    title: "Solide Cotizoo - Logiciel de facturation pour freelances",
+    siteName: "faktuur.io",
+    title: "faktuur.io - Logiciel de facturation pour freelances",
     description:
       "Créez et gérez vos devis et factures en ligne. Simple, rapide et conforme à la réglementation française.",
     images: [
@@ -68,13 +68,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Solide Cotizoo - Logiciel de facturation",
+        alt: "faktuur.io - Logiciel de facturation",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Solide Cotizoo - Logiciel de facturation pour freelances",
+    title: "faktuur.io - Logiciel de facturation pour freelances",
     description:
       "Créez et gérez vos devis et factures en ligne. Simple, rapide et conforme.",
     images: ["/og-image.png"],
