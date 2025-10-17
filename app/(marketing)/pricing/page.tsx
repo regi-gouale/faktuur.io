@@ -11,31 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { buildMarketingMetadata } from "@/lib/metadata";
 import { ArrowRight, Check, Sparkles, X } from "lucide-react";
 import Link from "next/link";
-
-export const metadata = buildMarketingMetadata({
-  title: "Tarifs faktuur.io - Plans adaptés à votre activité",
-  description:
-    "Découvrez nos plans de facturation transparents : démarrez gratuitement puis débloquez les automations et exports avancés dès 29€/mois.",
-  keywords: [
-    "tarifs facturation",
-    "prix logiciel facturation",
-    "plan gratuit facturation",
-    "abonnement facturation freelance",
-    "tarif devis facture",
-  ],
-  alternates: {
-    canonical: "/pricing",
-  },
-  openGraph: {
-    title: "Tarifs faktuur.io",
-    description:
-      "Plan gratuit pour démarrer, automations et exports avancés dès 29€/mois. Sans engagement.",
-    url: "/pricing",
-  },
-});
 
 type Plan = {
   readonly name: string;

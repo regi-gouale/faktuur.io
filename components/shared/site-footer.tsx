@@ -5,12 +5,12 @@ const footerLinks = {
   product: [
     { href: "#features", label: "Fonctionnalités" },
     { href: "/pricing", label: "Tarifs" },
-    { href: "/signup", label: "Commencer" },
+    { href: "/register", label: "Commencer" },
   ],
   resources: [
     { href: "/about", label: "À propos" },
-    { href: "mailto:bonjour@cotizoo.com", label: "Contact", external: true },
-    { href: "/marketing/pricing", label: "Guides & docs" },
+    { href: "mailto:contact@cotizoo.com", label: "Contact", external: true },
+    { href: "/docs", label: "Guides & docs" },
   ],
   legal: [
     { href: "#", label: "Confidentialité" },
