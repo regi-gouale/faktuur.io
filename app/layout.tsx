@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { ReactQueryProvider } from "@/components/providers/react-query-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,7 +15,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <body>{children}</body>
+      <body>
+        <ReactQueryProvider>
+          <NuqsAdapter>
+            <main className="min-h-screen w-full bg-background text-foreground">
+              {children}
+            </main>
+          </NuqsAdapter>
+        </ReactQueryProvider>
+      </body>
     </html>
   );
 }
