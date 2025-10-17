@@ -1,4 +1,8 @@
 import { sendEmail, sendEmailBatch } from "@/api/services/email";
+import {
+  addContactToUseSend,
+  type CreateContactResponse,
+} from "@/api/services/usesend";
 import { EmailPayload, EmailResponse } from "@/lib/schemas/email";
 
 /**
@@ -91,4 +95,21 @@ export async function sendBulkEmails(
   payloads: EmailPayload[]
 ): Promise<EmailResponse[]> {
   return sendEmailBatch(payloads);
+}
+
+/**
+ * Sync a user to UseSend contacts during registration
+ * Only runs when UseSend provider is configured
+ * Does not block registration if contact sync fails
+ */
+export async function syncUserToUseSendContacts(
+  email: string,
+  firstName?: string,
+  lastName?: string
+): Promise<CreateContactResponse> {
+  return addContactToUseSend({
+    email,
+    firstName: firstName || undefined,
+    lastName: lastName || undefined,
+  });
 }

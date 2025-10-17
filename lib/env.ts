@@ -9,8 +9,10 @@ const envSchema = z.object({
 
   // Resend configuration
   RESEND_API_KEY: z.string().optional(),
-  // Resend configuration
+
+  // UseSend configuration
   USESEND_API_KEY: z.string().optional(),
+  USESEND_CONTACT_BOOK_ID: z.string().optional(),
 
   // Nodemailer configuration
   SMTP_HOST: z.string().optional(),
