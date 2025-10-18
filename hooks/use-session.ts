@@ -15,7 +15,7 @@ interface Session {
 }
 
 async function fetchSession(): Promise<Session | null> {
-  const response = await fetch("/api/auth/get-session");
+  const response = await fetch("/api/session");
 
   if (response.status === 401) {
     return null;

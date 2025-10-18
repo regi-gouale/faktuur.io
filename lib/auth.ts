@@ -1,11 +1,11 @@
+import {
+  sendEmailVerificationEmail,
+  sendPasswordResetEmail,
+} from "@/lib/dal/email";
 import { prisma } from "@/lib/prisma";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { openAPI, organization } from "better-auth/plugins";
-import {
-  sendEmailVerificationEmail,
-  sendPasswordResetEmail,
-} from "./dal/email";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -13,7 +13,7 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
-    sendResetPassword: async ({ user, url, token }) => {
+    sendResetPassword: async ({ user, url }) => {
       await sendPasswordResetEmail(user.email, url, 1);
     },
   },

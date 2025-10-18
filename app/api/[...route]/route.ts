@@ -14,6 +14,9 @@ const app = new Hono<{
 }>().basePath("/api");
 
 app
+  .on(["POST", "GET"], "/auth/*", (c) => {
+    return auth.handler(c.req.raw);
+  })
   .use("*", async (c, next) => {
     const session = await auth.api.getSession({ headers: c.req.raw.headers });
 
@@ -26,9 +29,6 @@ app
     c.set("user", session.user);
     c.set("session", session.session);
     return next();
-  })
-  .on(["POST", "GET"], "/auth/*", (c) => {
-    return auth.handler(c.req.raw);
   })
   .route("/email", emailRouter)
   .get("/session", async (c) => {

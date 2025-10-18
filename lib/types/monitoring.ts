@@ -1,6 +1,6 @@
 export async function trackQueryPerformance(
   queryName: string,
-  fn: () => Promise<unknown>
+  fn: () => Promise<string | undefined>
 ) {
   const start = performance.now();
   try {

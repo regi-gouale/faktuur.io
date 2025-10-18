@@ -7,7 +7,7 @@ import { trackQueryPerformance } from "../types/monitoring";
  */
 export async function getUserFirstOrganizationSlug(
   userId: string
-): Promise<unknown> {
+): Promise<string | undefined> {
   return trackQueryPerformance("getUserFirstOrganizationSlug", async () => {
     const membership = await prisma.member.findFirst({
       where: { userId },
@@ -22,5 +22,5 @@ export async function getUserFirstOrganizationSlug(
     });
 
     return membership?.organization?.slug;
-  });
+  }) as Promise<string | undefined>;
 }

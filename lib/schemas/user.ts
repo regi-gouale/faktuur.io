@@ -49,8 +49,11 @@ export const resetPasswordSchema = z
     password: z
       .string()
       .min(8, "Le mot de passe doit contenir au moins 8 caractères")
+      .max(128, {
+        message: "Le mot de passe doit contenir au maximum 128 caractères.",
+      })
       .regex(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]*$/,
         {
           message:
             "Le mot de passe doit contenir au moins une minuscule, une majuscule, un chiffre et un caractère spécial (@$!%*?&)",
@@ -59,6 +62,9 @@ export const resetPasswordSchema = z
     confirmPassword: z
       .string()
       .min(8, "Le mot de passe doit contenir au moins 8 caractères")
+      .max(128, {
+        message: "Le mot de passe doit contenir au maximum 128 caractères.",
+      })
       .regex(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]*$/,
         {
@@ -69,4 +75,5 @@ export const resetPasswordSchema = z
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Les mots de passe ne correspondent pas",
+    path: ["confirmPassword"],
   });

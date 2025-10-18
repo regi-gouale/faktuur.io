@@ -68,13 +68,15 @@ export function ResetPasswordForm() {
         token: token,
         newPassword: data.confirmPassword,
       }),
-    }).then((res) => res.json());
-    if (!result.error) {
-      toast.success("Mot de passe réinitialisé avec succès !");
-      form.reset();
-    } else {
+    });
+
+    if (!result.ok) {
       toast.error("Une erreur est survenue. Veuillez réessayer.");
+      setIsLoading(false);
+      return;
     }
+    toast.success("Mot de passe réinitialisé avec succès !");
+    form.reset();
     setIsLoading(false);
     router.push("/login");
   };

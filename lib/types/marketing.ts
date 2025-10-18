@@ -1,4 +1,4 @@
-import { LucideIcon } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 export type MarketingBadgeVariant = "default" | "secondary" | "outline";
 
