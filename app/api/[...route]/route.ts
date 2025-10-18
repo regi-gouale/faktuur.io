@@ -1,5 +1,6 @@
 import emailRouter from "@/api/routes/email";
 import { auth } from "@/lib/auth";
+import { getUserFirstOrganizationSlug } from "@/lib/dal/organization";
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
 
@@ -32,15 +33,19 @@ app.on(["POST", "GET"], "/auth/*", (c) => {
 
 app.route("/email", emailRouter);
 
-app.get("/session", (c) => {
+app.get("/session", async (c) => {
   const session = c.get("session");
   const user = c.get("user");
 
   if (!user) return c.body(null, 401);
 
+  // Récupérer le slug d'organisation de l'utilisateur
+  const orgSlug = await getUserFirstOrganizationSlug(user.id);
+
   return c.json({
     session,
     user,
+    orgSlug,
   });
 });
 

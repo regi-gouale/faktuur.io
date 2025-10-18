@@ -65,7 +65,7 @@ export default async function MarketingLayout({
 
             {/* Right side actions */}
             <div className="flex items-center gap-2">
-              <HeaderActionsServer user={null} />
+              <HeaderActionsServer />
               {/* Mobile Navigation */}
               <MobileNav navLinks={navLinks} />
             </div>
