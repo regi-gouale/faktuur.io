@@ -1,4 +1,6 @@
-// export type MarketingBadgeVariant = "default" | "secondary" | "outline";
+import { LucideIcon } from "lucide-react";
+
+export type MarketingBadgeVariant = "default" | "secondary" | "outline";
 
 // export type MarketingButtonVariant =
 //   | "default"
@@ -10,13 +12,13 @@
 
 // export type MarketingButtonSize = "default" | "sm" | "lg" | "icon";
 
-// export interface MarketingEyebrow {
-//   readonly label: string;
-//   readonly icon?: LucideIcon;
-//   readonly variant?: MarketingBadgeVariant;
-//   readonly className?: string;
-//   readonly iconClassName?: string;
-// }
+export interface MarketingEyebrow {
+  readonly label: string;
+  readonly icon?: LucideIcon;
+  readonly variant?: MarketingBadgeVariant;
+  readonly className?: string;
+  readonly iconClassName?: string;
+}
 
 // export interface MarketingCTAAction {
 //   readonly label: string;
