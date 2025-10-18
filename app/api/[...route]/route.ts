@@ -1,4 +1,6 @@
+import emailRouter from "@/api/routes/email";
 import { auth } from "@/lib/auth";
+import { getUserFirstOrganizationSlug } from "@/lib/dal/organization";
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
 
@@ -11,35 +13,39 @@ const app = new Hono<{
   };
 }>().basePath("/api");
 
-app.use("*", async (c, next) => {
-  const session = await auth.api.getSession({ headers: c.req.raw.headers });
+app
+  .on(["POST", "GET"], "/auth/*", (c) => {
+    return auth.handler(c.req.raw);
+  })
+  .use("*", async (c, next) => {
+    const session = await auth.api.getSession({ headers: c.req.raw.headers });
 
-  if (!session) {
-    c.set("user", null);
-    c.set("session", null);
+    if (!session) {
+      c.set("user", null);
+      c.set("session", null);
+      return next();
+    }
+
+    c.set("user", session.user);
+    c.set("session", session.session);
     return next();
-  }
+  })
+  .route("/email", emailRouter)
+  .get("/session", async (c) => {
+    const session = c.get("session");
+    const user = c.get("user");
 
-  c.set("user", session.user);
-  c.set("session", session.session);
-  return next();
-});
+    if (!user) return c.body(null, 401);
 
-app.on(["POST", "GET"], "/auth/*", (c) => {
-  return auth.handler(c.req.raw);
-});
+    // Récupérer le slug d'organisation de l'utilisateur
+    const orgSlug = await getUserFirstOrganizationSlug(user.id);
 
-app.get("/session", (c) => {
-  const session = c.get("session");
-  const user = c.get("user");
-
-  if (!user) return c.body(null, 401);
-
-  return c.json({
-    session,
-    user,
+    return c.json({
+      session,
+      user,
+      orgSlug,
+    });
   });
-});
 
 export const GET = handle(app);
 export const POST = handle(app);

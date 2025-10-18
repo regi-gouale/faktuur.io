@@ -32,7 +32,7 @@ export function HeroSection() {
           descriptionClassName="mx-auto max-w-2xl text-balance text-lg text-muted-foreground sm:text-xl"
         />
         <div className="flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
-          <Link href="/signup" className="w-full sm:w-auto">
+          <Link href="/register" className="w-full sm:w-auto">
             <Button size="lg" className="w-full gap-2 text-base">
               Essayer gratuitement
               <ArrowRight className="size-5" />

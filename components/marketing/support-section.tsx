@@ -25,7 +25,7 @@ export default function SupportSection() {
                 descriptionClassName="text-lg text-muted-foreground"
               />
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                <Link href="/signup" className="w-full sm:w-auto">
+                <Link href="/register" className="w-full sm:w-auto">
                   <Button
                     size="lg"
                     variant="secondary"

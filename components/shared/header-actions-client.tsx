@@ -10,44 +10,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useSession } from "@/hooks/use-session";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
-interface User {
-  name: string;
-  email: string;
-  image?: string;
-}
-
-interface HeaderActionsClientProps {
-  initialUser?: User | null;
-  initialOrgSlug?: string;
-}
-
-export function HeaderActionsClient({
-  initialUser,
-  initialOrgSlug,
-}: HeaderActionsClientProps) {
-  const [user] = useState<User | null | undefined>(initialUser);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // En production, les données sont passées via les props
-    // Pas besoin de refetch
-    setIsLoading(false);
-  }, [initialUser, initialOrgSlug]);
+export function HeaderActionsClient() {
+  const { session, isLoading } = useSession();
 
   if (isLoading) {
     return null;
   }
 
   // Si l'utilisateur est connecté
-  if (user) {
+  if (session?.user) {
     return (
       <div className="flex items-center gap-2 sm:gap-4">
         <Link
-          href={initialOrgSlug ? `/dashboard/${initialOrgSlug}` : "/dashboard"}
+          href={
+            session.orgSlug ? `/dashboard/${session.orgSlug}` : "/dashboard"
+          }
           className="hidden sm:block"
         >
           <Button variant="outline" size="sm">
@@ -63,26 +44,28 @@ export function HeaderActionsClient({
               className="flex items-center gap-2 px-2 sm:px-3"
             >
               <Avatar className="size-7 sm:size-8">
-                <AvatarImage src={user.image} alt={user.name} />
+                <AvatarImage src={session.user.image} alt={session.user.name} />
                 <AvatarFallback className="text-xs sm:text-sm">
-                  {user.name
+                  {session.user.name
                     .split(" ")
-                    .map((n) => n[0])
+                    .map((n: string) => n[0])
                     .join("")
                     .toUpperCase()}
                 </AvatarFallback>
               </Avatar>
               <span className="hidden md:inline-block text-sm font-medium">
-                {user.name}
+                {session.user.name}
               </span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel>
               <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none">{user.name}</p>
+                <p className="text-sm font-medium leading-none">
+                  {session.user.name}
+                </p>
                 <p className="text-xs leading-none text-muted-foreground">
-                  {user.email}
+                  {session.user.email}
                 </p>
               </div>
             </DropdownMenuLabel>
@@ -90,7 +73,9 @@ export function HeaderActionsClient({
             <DropdownMenuItem asChild>
               <Link
                 href={
-                  initialOrgSlug ? `/dashboard/${initialOrgSlug}` : "/dashboard"
+                  session.orgSlug
+                    ? `/dashboard/${session.orgSlug}`
+                    : "/dashboard"
                 }
               >
                 <ArrowRight className="mr-2 size-4" />
@@ -112,7 +97,7 @@ export function HeaderActionsClient({
           <span className="sm:hidden">Se connecter</span>
         </Button>
       </Link>
-      <Link href="/signup">
+      <Link href="/register">
         <Button size="sm" className="px-3 sm:px-4">
           <span className="hidden sm:inline">Commencer</span>
           <span className="sm:hidden">Démarrer</span>
