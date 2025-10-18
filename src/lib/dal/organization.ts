@@ -111,3 +111,45 @@ export async function getOrganizationForUser(
     );
   }
 }
+
+/**
+ * Récupère toutes les organisations d'un utilisateur
+ * @param userId - ID de l'utilisateur
+ * @returns Liste des organisations avec le rôle de l'utilisateur
+ */
+export async function getUserOrganizations(userId: string): Promise<
+  Array<{
+    id: string;
+    name: string;
+    slug: string;
+    logo: string | null;
+    role: string;
+  }>
+> {
+  const start = performance.now();
+  try {
+    const memberships = await prisma.member.findMany({
+      where: { userId },
+      select: {
+        role: true,
+        organization: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            logo: true,
+          },
+        },
+      },
+      orderBy: { createdAt: "asc" },
+    });
+
+    return memberships.map((membership) => ({
+      ...membership.organization,
+      role: membership.role,
+    }));
+  } finally {
+    const duration = performance.now() - start;
+    console.log(`[Performance] getUserOrganizations: ${duration.toFixed(2)}ms`);
+  }
+}
