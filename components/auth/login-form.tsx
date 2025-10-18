@@ -18,10 +18,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { authClient } from "@/lib/auth-client";
 import { loginSchema } from "@/lib/schemas/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { useQueryState } from "nuqs";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -45,23 +45,31 @@ export function LoginForm() {
   async function onSubmit(data: z.infer<typeof loginSchema>) {
     setIsLoading(true);
 
-    const result = await authClient.signIn.email({
-      email: data.email,
-      password: data.password,
-      callbackURL: "/dashboard",
-      rememberMe: true,
+    const result = await fetch("/api/auth/sign-in/email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: data.email,
+        password: data.password,
+        callbackURL: "/dashboard",
+      }),
     });
 
-    if (result.error) {
-      toast.error("Erreur lors de la connexion : " + result.error);
+    const loginResponse = await result.json();
+    if (!result.ok) {
+      toast.error("Erreur lors de la connexion : " + loginResponse.message);
       setIsLoading(false);
       return;
     }
+
     setIsLoading(false);
-    toast.success("Connexion réussie ! Vous allez être redirigé(e).");
-    form.reset();
     setEmail("");
     setPassword("");
+    form.reset();
+    toast.success("Connexion réussie ! Vous allez être redirigé(e).");
+    redirect(loginResponse.url);
   }
 
   return (

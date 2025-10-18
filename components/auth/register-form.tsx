@@ -19,7 +19,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { authClient } from "@/lib/auth-client";
 import { signupSchema } from "@/lib/schemas/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -51,15 +50,23 @@ export function RegisterForm() {
   async function onSubmit(data: z.infer<typeof signupSchema>) {
     setIsLoading(true);
     // create user account with better auth
-    const resultUser = await authClient.signUp.email({
-      email: data.email,
-      password: data.password,
-      name: data.name,
-      callbackURL: `/dashboard`,
+    const resultUser = await fetch("/api/auth/sign-up/email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: data.name,
+        email: data.email,
+        company: data.company,
+        password: data.password,
+        callbackURL: "/dashboard",
+      }),
     });
 
-    if (resultUser.error) {
-      toast.error("Erreur lors de l'inscription : " + resultUser.error.message);
+    const signupResponse = await resultUser.json();
+    if (!resultUser.ok) {
+      toast.error("Erreur lors de l'inscription : " + signupResponse.message);
       setIsLoading(false);
       return;
     }
@@ -73,7 +80,7 @@ export function RegisterForm() {
     setEmail("");
     setCompany("");
     setPassword("");
-    redirect(`/dashboard`);
+    redirect(signupResponse.url);
   }
 
   return (

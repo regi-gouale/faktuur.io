@@ -13,41 +13,39 @@ const app = new Hono<{
   };
 }>().basePath("/api");
 
-app.use("*", async (c, next) => {
-  const session = await auth.api.getSession({ headers: c.req.raw.headers });
+app
+  .use("*", async (c, next) => {
+    const session = await auth.api.getSession({ headers: c.req.raw.headers });
 
-  if (!session) {
-    c.set("user", null);
-    c.set("session", null);
+    if (!session) {
+      c.set("user", null);
+      c.set("session", null);
+      return next();
+    }
+
+    c.set("user", session.user);
+    c.set("session", session.session);
     return next();
-  }
+  })
+  .on(["POST", "GET"], "/auth/*", (c) => {
+    return auth.handler(c.req.raw);
+  })
+  .route("/email", emailRouter)
+  .get("/session", async (c) => {
+    const session = c.get("session");
+    const user = c.get("user");
 
-  c.set("user", session.user);
-  c.set("session", session.session);
-  return next();
-});
+    if (!user) return c.body(null, 401);
 
-app.on(["POST", "GET"], "/auth/*", (c) => {
-  return auth.handler(c.req.raw);
-});
+    // Récupérer le slug d'organisation de l'utilisateur
+    const orgSlug = await getUserFirstOrganizationSlug(user.id);
 
-app.route("/email", emailRouter);
-
-app.get("/session", async (c) => {
-  const session = c.get("session");
-  const user = c.get("user");
-
-  if (!user) return c.body(null, 401);
-
-  // Récupérer le slug d'organisation de l'utilisateur
-  const orgSlug = await getUserFirstOrganizationSlug(user.id);
-
-  return c.json({
-    session,
-    user,
-    orgSlug,
+    return c.json({
+      session,
+      user,
+      orgSlug,
+    });
   });
-});
 
 export const GET = handle(app);
 export const POST = handle(app);
