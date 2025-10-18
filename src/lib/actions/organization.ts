@@ -53,35 +53,75 @@ export async function createOrganizationAction(data: CreateOrganizationInput) {
     }
 
     // Création de l'organisation
-    const organization = await prisma.organization.create({
-      data: {
-        id: crypto.randomUUID(),
-        name: validatedData.name,
-        slug,
-        createdAt: new Date(),
-        members: {
-          create: {
-            id: crypto.randomUUID(),
-            userId: session.user.id,
-            role: "owner",
-            createdAt: new Date(),
-          },
+    // const organization = await prisma.organization.create({
+    //   data: {
+    //     id: crypto.randomUUID(),
+    //     name: validatedData.name,
+    //     slug,
+    //     logo: validatedData.logo || null,
+    //     createdAt: new Date(),
+    //     members: {
+    //       create: {
+    //         id: crypto.randomUUID(),
+    //         userId: session.user.id,
+    //         role: "owner",
+    //         createdAt: new Date(),
+    //       },
+    //     },
+    //   },
+    //   select: {
+    //     id: true,
+    //     slug: true,
+    //     name: true,
+    //   },
+    // });
+    console.log("userId:", session.user.id);
+
+    // Construction de l'URL absolue pour l'appel côté serveur
+    const headersList = await headers();
+    const host = headersList.get("host") || "localhost:3000";
+    const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+    const baseUrl = `${protocol}://${host}`;
+
+    // Récupérer le cookie d'authentification pour l'API Better-auth
+    const cookie = headersList.get("cookie") || "";
+
+    const organization = await fetch(
+      `${baseUrl}/api/auth/organization/create`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: cookie, // Transmettre les cookies pour l'authentification
         },
-      },
-      select: {
-        id: true,
-        slug: true,
-        name: true,
-      },
-    });
+        body: JSON.stringify({
+          name: validatedData.name,
+          slug,
+          userId: session.user.id,
+          logo: validatedData.logo || "",
+        }),
+      }
+    );
+
+    // console.log("organization response:", organization);
+    if (organization.status !== 200) {
+      throw new Error(organization.statusText);
+    }
+
+    const organizationData = await organization.json();
 
     console.log(
-      `[Organization] Created organization "${organization.name}" (${organization.slug}) for user ${session.user.id}`
+      `[Organization] Created organization "${organizationData.name}" (${organizationData.slug}) for user ${session.user.id}`
     );
 
     // Redirection vers le dashboard de l'organisation
-    redirect(`/dashboard/${organization.slug}`);
+    redirect(`${baseUrl}/dashboard/${organizationData.slug}`);
   } catch (error) {
+    // Ne pas logger l'erreur NEXT_REDIRECT (comportement normal)
+    if (error instanceof Error && error.message === "NEXT_REDIRECT") {
+      throw error; // Re-throw pour permettre la redirection
+    }
+
     console.error("[Organization] Error creating organization:", error);
 
     if (error instanceof Error) {

@@ -12,6 +12,7 @@ export const createOrganizationSchema = z.object({
       "Le nom de l'organisation doit contenir au maximum 100 caractères"
     )
     .trim(),
+  logo: z.url("Le logo doit être une URL valide").optional().or(z.literal("")),
 });
 
 export type CreateOrganizationInput = z.infer<typeof createOrganizationSchema>;

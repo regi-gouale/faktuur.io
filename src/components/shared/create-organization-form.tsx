@@ -19,6 +19,7 @@ import { Building2, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
+import { LogoUploader } from "./logo-uploader";
 
 type CreateOrganizationFormData = z.infer<typeof createOrganizationSchema>;
 
@@ -30,6 +31,7 @@ export function CreateOrganizationForm() {
     resolver: zodResolver(createOrganizationSchema),
     defaultValues: {
       name: "",
+      logo: "",
     },
   });
 
@@ -77,6 +79,28 @@ export function CreateOrganizationForm() {
               <FormDescription>
                 Le nom de votre entreprise tel qu&apos;elle apparaîtra sur vos
                 factures et devis.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="logo"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Logo (optionnel)</FormLabel>
+              <FormControl>
+                <LogoUploader
+                  value={field.value}
+                  onChange={field.onChange}
+                  disabled={isSubmitting}
+                />
+              </FormControl>
+              <FormDescription>
+                Ajoutez le logo de votre organisation depuis votre appareil ou
+                via une URL.
               </FormDescription>
               <FormMessage />
             </FormItem>
