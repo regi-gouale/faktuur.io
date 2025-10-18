@@ -14,8 +14,6 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     sendResetPassword: async ({ user, url, token }) => {
-      console.log("Reset token:", token);
-      console.log("Reset URL:", url);
       await sendPasswordResetEmail(user.email, url, 1);
     },
   },
@@ -29,7 +27,8 @@ export const auth = betterAuth({
   session: {
     cookieCache: {
       enabled: true,
-      maxAge: 5 * 60,
+      maxAge: 1 * 60,
     },
+    expiresIn: 7 * 24 * 60 * 60,
   },
 });

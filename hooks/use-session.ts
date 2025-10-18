@@ -1,6 +1,7 @@
+// hooks/use-session.ts
 "use client";
 
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 interface User {
   name: string;
@@ -13,51 +14,49 @@ interface Session {
   orgSlug?: string;
 }
 
-/**
- * Hook pour récupérer la session utilisateur côté client
- * Utilisé pour afficher les informations d'authentification sur les pages statiques
- */
+async function fetchSession(): Promise<Session | null> {
+  const response = await fetch("/api/auth/get-session");
+
+  if (response.status === 401) {
+    return null;
+  }
+
+  if (!response.ok) {
+    throw new Error("Erreur lors de la récupération de la session");
+  }
+
+  const data = await response.json();
+
+  if (data?.user) {
+    return {
+      user: {
+        name: data.user.name,
+        email: data.user.email,
+        image: data.user.image,
+      },
+      orgSlug: data.orgSlug,
+    };
+  }
+
+  return null;
+}
+
 export function useSession() {
-  const [session, setSession] = useState<Session | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const {
+    data: session,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["session"],
+    queryFn: fetchSession,
+    staleTime: 5 * 60 * 1000, // 5 minutes - correspond au cookieCache de better-auth
+    retry: 1,
+    refetchOnWindowFocus: false, // Évite refetch inutile
+  });
 
-  useEffect(() => {
-    async function fetchSession() {
-      try {
-        const response = await fetch("/api/auth/get-session");
-
-        if (response.status === 401) {
-          setSession(null);
-          return;
-        }
-
-        if (!response.ok) {
-          throw new Error("Erreur lors de la récupération de la session");
-        }
-
-        const data = await response.json();
-
-        if (data?.user) {
-          setSession({
-            user: {
-              name: data.user.name,
-              email: data.user.email,
-              image: data.user.image,
-            },
-            orgSlug: data.orgSlug,
-          });
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Erreur inconnue");
-        setSession(null);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchSession();
-  }, []);
-
-  return { session, isLoading, error };
+  return {
+    session,
+    isLoading,
+    error: error ? String(error) : null,
+  };
 }

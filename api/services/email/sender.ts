@@ -1,27 +1,31 @@
+import { renderTemplate } from "@/api/services/email/templates";
 import { getEnv } from "@/lib/env";
 import { EmailPayload, EmailResponse } from "@/lib/schemas/email";
 import nodemailer from "nodemailer";
+import pLimit from "p-limit";
 import { UseSend } from "usesend-js";
-import { renderTemplate } from "./templates";
 
 let transporter: nodemailer.Transporter | null = null;
+let transporterConfig: ReturnType<typeof getEnv> | null = null;
 let usesendClient: InstanceType<typeof UseSend> | null = null;
 
 function getNodemailerTransporter(): nodemailer.Transporter {
   if (transporter) return transporter;
 
-  const env = getEnv();
+  if (!transporterConfig) {
+    transporterConfig = getEnv(); // ← Cache config aussi
+  }
 
   // Nodemailer configuration
   const config = {
-    host: env.SMTP_HOST || "localhost",
-    port: env.SMTP_PORT || 587,
-    secure: env.SMTP_PORT === 465,
-    ...(env.SMTP_USER
+    host: transporterConfig.SMTP_HOST || "localhost",
+    port: transporterConfig.SMTP_PORT || 587,
+    secure: transporterConfig.SMTP_PORT === 465,
+    ...(transporterConfig.SMTP_USER
       ? {
           auth: {
-            user: env.SMTP_USER,
-            pass: env.SMTP_PASSWORD || "",
+            user: transporterConfig.SMTP_USER,
+            pass: transporterConfig.SMTP_PASSWORD || "",
           },
         }
       : {}),
@@ -119,7 +123,12 @@ async function sendEmailViaUseSend(
 }
 
 export async function sendEmailBatch(
-  payloads: EmailPayload[]
+  payloads: EmailPayload[],
+  concurrency: number = 5
 ): Promise<EmailResponse[]> {
-  return Promise.all(payloads.map((payload) => sendEmail(payload)));
+  const limit = pLimit(concurrency);
+
+  return Promise.all(
+    payloads.map((payload) => limit(() => sendEmail(payload)))
+  );
 }
