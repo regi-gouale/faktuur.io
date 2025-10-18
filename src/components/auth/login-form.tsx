@@ -30,6 +30,7 @@ import { z } from "zod";
 
 export function LoginForm() {
   const [email, setEmail] = useQueryState("email");
+  const [callbackUrl] = useQueryState("callbackUrl");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -53,7 +54,7 @@ export function LoginForm() {
       body: JSON.stringify({
         email: data.email,
         password: data.password,
-        callbackURL: "/dashboard",
+        callbackURL: callbackUrl || "/dashboard",
       }),
     });
 
