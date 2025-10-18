@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import { ArrowRight, Check, Sparkles, X } from "lucide-react";
 import Link from "next/link";
+import { metadata as pricingMetatdata } from "./metadata";
 
 type Plan = {
   readonly name: string;
@@ -158,6 +159,8 @@ const comparisonMetrics = [
     enterprise: "Support dédié 24/7",
   },
 ] as const;
+
+export const metadata = pricingMetatdata;
 
 export default function PricingPage() {
   return (
