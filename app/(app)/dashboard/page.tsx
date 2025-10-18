@@ -11,7 +11,7 @@ export default function DashboardPage() {
     const checkOrganization = async () => {
       try {
         // Récupérer la session avec orgSlug
-        const response = await fetch("/api/auth/get-session");
+        const response = await fetch("/api/session");
 
         if (!response.ok) {
           // Pas de session, le layout va rediriger vers /login
