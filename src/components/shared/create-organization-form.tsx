@@ -1,0 +1,116 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { createOrganizationAction } from "@/lib/actions/organization";
+import { createOrganizationSchema } from "@/lib/schemas/organization";
+import { generateSlug } from "@/lib/utils/slug";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Building2, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import type { z } from "zod";
+
+type CreateOrganizationFormData = z.infer<typeof createOrganizationSchema>;
+
+export function CreateOrganizationForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [generatedSlug, setGeneratedSlug] = useState("");
+
+  const form = useForm<CreateOrganizationFormData>({
+    resolver: zodResolver(createOrganizationSchema),
+    defaultValues: {
+      name: "",
+    },
+  });
+
+  const handleNameChange = (value: string) => {
+    // Génère le slug en temps réel pendant que l'utilisateur tape
+    if (value.trim()) {
+      setGeneratedSlug(generateSlug(value));
+    } else {
+      setGeneratedSlug("");
+    }
+  };
+
+  const onSubmit = async (data: CreateOrganizationFormData) => {
+    setIsSubmitting(true);
+
+    try {
+      await createOrganizationAction(data);
+      // La redirection est gérée dans la Server Action
+    } catch (error) {
+      console.error("Error creating organization:", error);
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nom de l&apos;organisation</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  placeholder="Ex: Mon Entreprise"
+                  onChange={(e) => {
+                    field.onChange(e);
+                    handleNameChange(e.target.value);
+                  }}
+                  disabled={isSubmitting}
+                />
+              </FormControl>
+              <FormDescription>
+                Le nom de votre entreprise tel qu&apos;elle apparaîtra sur vos
+                factures et devis.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {generatedSlug && (
+          <div className="rounded-lg border bg-muted/50 p-4">
+            <div className="flex items-center gap-2 text-sm">
+              <Building2 className="h-4 w-4 text-muted-foreground" />
+              <span className="text-muted-foreground">
+                URL de votre entreprise :
+              </span>
+              <code className="font-mono bg-background px-2 py-0.5 rounded text-primary">
+                /dashboard/{generatedSlug}
+              </code>
+            </div>
+          </div>
+        )}
+
+        <Button type="submit" disabled={isSubmitting} className="w-full">
+          {isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Création en cours...
+            </>
+          ) : (
+            <>
+              <Building2 className="mr-2 h-4 w-4" />
+              Créer l&apos;organisation
+            </>
+          )}
+        </Button>
+      </form>
+    </Form>
+  );
+}
