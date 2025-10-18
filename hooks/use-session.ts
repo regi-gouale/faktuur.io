@@ -25,7 +25,7 @@ export function useSession() {
   useEffect(() => {
     async function fetchSession() {
       try {
-        const response = await fetch("/api/session");
+        const response = await fetch("/api/auth/get-session");
 
         if (response.status === 401) {
           setSession(null);

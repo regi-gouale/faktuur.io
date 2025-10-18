@@ -35,3 +35,34 @@ export const signupSchema = z.object({
       }
     ),
 });
+
+export const forgotPasswordSchema = z.object({
+  email: z.email("L'email doit être valide"),
+});
+
+export const resetPasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(8, "Le mot de passe doit contenir au moins 8 caractères")
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+        {
+          message:
+            "Le mot de passe doit contenir au moins une minuscule, une majuscule, un chiffre et un caractère spécial (@$!%*?&)",
+        }
+      ),
+    confirmPassword: z
+      .string()
+      .min(8, "Le mot de passe doit contenir au moins 8 caractères")
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]*$/,
+        {
+          message:
+            "Le mot de passe doit contenir au moins une minuscule, une majuscule, un chiffre et un caractère spécial (@$!%*?&)",
+        }
+      ),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Les mots de passe ne correspondent pas",
+  });

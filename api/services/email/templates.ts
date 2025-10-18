@@ -69,8 +69,12 @@ function renderPasswordResetTemplate(
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h1>Réinitialiser votre mot de passe</h1>
         <p>Nous avons reçu une demande de réinitialisation de mot de passe pour votre compte.</p>
-        <p><a href="${variables.resetUrl}" style="display: inline-block; padding: 10px 20px; background-color: #3b82f6; color: white; text-decoration: none; border-radius: 5px;">Réinitialiser le mot de passe</a></p>
-        <p style="color: #666; font-size: 12px;">Ce lien expire dans ${variables.expiresIn} heures.</p>
+        <p><a href="${
+          variables.resetUrl
+        }" style="display: inline-block; padding: 10px 20px; background-color: #3b82f6; color: white; text-decoration: none; border-radius: 5px;">Réinitialiser le mot de passe</a></p>
+        <p style="color: #666; font-size: 12px;">Ce lien expire dans ${
+          variables.expiresIn
+        } heure${(variables.expiresIn as number) > 1 ? "s" : ""}.</p>
         <p style="color: #666; font-size: 12px;">Si vous n'avez pas demandé cette réinitialisation, ignorez cet email.</p>
         <hr />
         <p style="color: #666; font-size: 12px;">© 2025 Faktuur.io. Tous droits réservés.</p>
