@@ -368,9 +368,7 @@ export function useSession(): {
 
 ```typescript
 export async function sendEmail(payload: EmailPayload): Promise<EmailResponse>;
-export async function sendEmailBatch(
-  payloads: EmailPayload[]
-): Promise<EmailResponse[]>;
+export async function sendEmailBatch(payloads: EmailPayload[]): Promise<EmailResponse[]>;
 ```
 
 ---
@@ -425,10 +423,7 @@ export function renderTemplate(
 
 ```typescript
 export async function addContactToUseSend(input: CreateContactInput);
-export async function updateContactInUseSend(
-  contactId: string,
-  input: Partial<CreateContactInput>
-);
+export async function updateContactInUseSend(contactId: string, input: Partial<CreateContactInput>);
 ```
 
 ---
@@ -572,9 +567,7 @@ export async function updateContactInUseSend(
 **Function:**
 
 ```typescript
-export async function getUserFirstOrganizationSlug(
-  userId: string
-): Promise<string | undefined>;
+export async function getUserFirstOrganizationSlug(userId: string): Promise<string | undefined>;
 ```
 
 **Optimisation:**
@@ -866,7 +859,6 @@ Documentation complète du système email:
 ### Flow Utilisateur
 
 1. **Inscription** (`/register`)
-
    - Formulaire avec validation
    - Création compte Better-auth
    - Envoi email de bienvenue
@@ -875,20 +867,17 @@ Documentation complète du système email:
    - Redirection vers dashboard
 
 2. **Connexion** (`/login`)
-
    - Email + Password
    - Remember me (cookie)
    - Redirection orgSlug-aware
    - Session sécurisée
 
 3. **Mot de passe oublié** (`/forgot-password`)
-
    - Demande reset via email
    - Token sécurisé 24h
    - Email avec lien magique
 
 4. **Réinitialisation** (`/reset-password?token=xxx`)
-
    - Validation token
    - Nouveau password avec confirmation
    - Règles strictes password
@@ -1170,7 +1159,7 @@ CREATE INDEX "member_userId_createdAt_idx" ON "member"("userId", "createdAt");
 
 ```typescript
 export const auth = betterAuth({
-  database: prismaAdapter(prisma, { provider: "sqlite" }),
+  database: prismaAdapter(prisma, { provider: 'sqlite' }),
   emailAndPassword: { enabled: true },
   plugins: [organization(), openAPI()],
   session: { cookieCache: { enabled: true, maxAge: 5 * 60 } },
@@ -1294,7 +1283,6 @@ export function getEnv() {
    ```
 
 2. **⚠️ IMPORTANT: Migrer useSession vers TanStack Query**
-
    - Réduire requêtes API de 80%
    - Cache automatique
    - Meilleure UX
@@ -1307,13 +1295,11 @@ export function getEnv() {
 ### Phase 2 - Features Manquantes
 
 4. **Vérification Email obligatoire**
-
    - Bloquer accès si email non vérifié
    - UI pour renvoyer email
    - Expiration tokens
 
 5. **2FA (Two-Factor Authentication)**
-
    - TOTP avec authenticator apps
    - SMS backup (optionnel)
    - Recovery codes
@@ -1326,13 +1312,11 @@ export function getEnv() {
 ### Phase 3 - Tests & Monitoring
 
 7. **Tests E2E complets**
-
    - Tous les flows auth
    - Edge cases
    - Error scenarios
 
 8. **Monitoring & Analytics**
-
    - Track signup conversions
    - Login success rate
    - Email delivery rate
@@ -1346,13 +1330,11 @@ export function getEnv() {
 ### Phase 4 - UX Improvements
 
 10. **Magic Link Login**
-
     - Passwordless option
     - Email-based auth
     - Meilleure conversion
 
 11. **Remember Device**
-
     - Fingerprinting
     - Trusted devices
     - Skip 2FA
