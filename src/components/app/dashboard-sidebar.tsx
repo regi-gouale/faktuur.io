@@ -79,15 +79,18 @@ export function DashboardSidebar({
   const isActive = (href: string) => pathname === href;
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" variant="inset">
       <SidebarHeader>
-        <Link
-          href={`/dashboard/${currentSlug}`}
-          className="flex items-center gap-2 px-2"
-        >
-          <Building2 className="h-6 w-6 text-primary" />
-          <span className="font-bold text-lg">Faktuur.io</span>
-        </Link>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" asChild tooltip="Faktuur.io">
+              <Link href={`/dashboard/${currentSlug}`}>
+                <Building2 className="h-6 w-6 text-primary" />
+                <span className="font-bold text-lg">Faktuur.io</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
 
       <SidebarContent>
