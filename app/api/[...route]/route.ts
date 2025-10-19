@@ -45,6 +45,25 @@ app
       user,
       orgSlug,
     });
+  })
+  .get("/debug/members/:userId", async (c) => {
+    const userId = c.req.param("userId");
+
+    const { prisma } = await import("@/lib/prisma");
+
+    // Récupérer tous les members
+    const members = await prisma.member.findMany({
+      where: { userId },
+      include: {
+        organization: true,
+      },
+    });
+
+    return c.json({
+      userId,
+      membersCount: members.length,
+      members,
+    });
   });
 
 export const GET = handle(app);
