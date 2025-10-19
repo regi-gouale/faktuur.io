@@ -23,7 +23,7 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
-import { redirect, usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface Organization {
   id: string;
@@ -52,6 +52,7 @@ export function DashboardSidebar({
   user,
 }: DashboardSidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
 
   const navigation = [
     {
@@ -163,7 +164,7 @@ export function DashboardSidebar({
                   },
                   body: JSON.stringify({}),
                 });
-                redirect("/");
+                router.push("/");
               }}
             >
               <LogOut />

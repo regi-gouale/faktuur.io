@@ -142,7 +142,7 @@ export function LogoUploader({ value, onChange, disabled }: LogoUploaderProps) {
                     ou glissez-déposez
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    PNG, JPG, SVG (max. 5MB)
+                    PNG, JPG, SVG (max. 1MB)
                   </p>
                 </div>
               </Label>

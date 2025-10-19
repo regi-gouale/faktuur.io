@@ -52,31 +52,6 @@ export async function createOrganizationAction(data: CreateOrganizationInput) {
       counter++;
     }
 
-    // Création de l'organisation
-    // const organization = await prisma.organization.create({
-    //   data: {
-    //     id: crypto.randomUUID(),
-    //     name: validatedData.name,
-    //     slug,
-    //     logo: validatedData.logo || null,
-    //     createdAt: new Date(),
-    //     members: {
-    //       create: {
-    //         id: crypto.randomUUID(),
-    //         userId: session.user.id,
-    //         role: "owner",
-    //         createdAt: new Date(),
-    //       },
-    //     },
-    //   },
-    //   select: {
-    //     id: true,
-    //     slug: true,
-    //     name: true,
-    //   },
-    // });
-    console.log("userId:", session.user.id);
-
     // Construction de l'URL absolue pour l'appel côté serveur
     const headersList = await headers();
     const host = headersList.get("host") || "localhost:3000";
@@ -115,7 +90,7 @@ export async function createOrganizationAction(data: CreateOrganizationInput) {
     );
 
     // Redirection vers le dashboard de l'organisation
-    redirect(`${baseUrl}/dashboard/${organizationData.slug}`);
+    redirect(`/dashboard/${organizationData.slug}`);
   } catch (error) {
     // Ne pas logger l'erreur NEXT_REDIRECT (comportement normal)
     if (error instanceof Error && error.message === "NEXT_REDIRECT") {
