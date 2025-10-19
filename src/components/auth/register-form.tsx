@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -8,7 +8,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
 import {
   Form,
   FormControl,
@@ -17,50 +17,50 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { signupSchema } from "@/lib/schemas/user";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import { useQueryState } from "nuqs";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { signupSchema } from '@/lib/schemas/user';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { useQueryState } from 'nuqs';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 export function RegisterForm() {
-  const [name, setName] = useQueryState("name");
-  const [email, setEmail] = useQueryState("email");
-  const [company, setCompany] = useQueryState("company");
-  const [password, setPassword] = useState("");
+  const [name, setName] = useQueryState('name');
+  const [email, setEmail] = useQueryState('email');
+  const [company, setCompany] = useQueryState('company');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   // Create Form object
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      name: name || "",
-      email: email || "",
-      company: company || "",
-      password: password || "",
+      name: name || '',
+      email: email || '',
+      company: company || '',
+      password: password || '',
     },
   });
 
   async function onSubmit(data: z.infer<typeof signupSchema>) {
     setIsLoading(true);
     // create user account with better auth
-    const resultUser = await fetch("/api/auth/sign-up/email", {
-      method: "POST",
+    const resultUser = await fetch('/api/auth/sign-up/email', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         name: data.name,
         email: data.email,
         company: data.company,
         password: data.password,
-        callbackURL: "/dashboard",
+        callbackURL: '/dashboard',
       }),
     });
 
@@ -72,33 +72,26 @@ export function RegisterForm() {
     }
 
     setIsLoading(false);
-    toast.success(
-      "Inscription réussie ! Un email de confirmation a été envoyé."
-    );
+    toast.success('Inscription réussie ! Un email de confirmation a été envoyé.');
     form.reset();
-    setName("");
-    setEmail("");
-    setCompany("");
-    setPassword("");
+    setName('');
+    setEmail('');
+    setCompany('');
+    setPassword('');
     redirect(signupResponse.url);
   }
 
   return (
-    <Card className="overflow-hidden rounded-4xl w-full">
+    <Card className="w-full overflow-hidden rounded-4xl">
       <CardHeader>
-        <CardTitle className="text-center text-xl font-bold">
-          Inscription
-        </CardTitle>
+        <CardTitle className="text-center text-xl font-bold">Inscription</CardTitle>
         <CardDescription>
           Veuillez remplir le formulaire ci-dessous pour vous inscrire.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form
-            className="space-y-4 p-4"
-            onSubmit={form.handleSubmit(onSubmit)}
-          >
+          <form className="space-y-4 p-4" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
               name="name"
@@ -198,20 +191,17 @@ export function RegisterForm() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full rounded-full mt-4 cursor-pointer"
+              className="mt-4 w-full cursor-pointer rounded-full"
             >
-              {isLoading ? "Inscription..." : "S'inscrire"}
+              {isLoading ? 'Inscription...' : "S'inscrire"}
             </Button>
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="text-center w-full">
-        <div className="text-center text-sm text-muted-foreground w-full">
-          Vous avez déjà un compte ?{" "}
-          <Link
-            href="/login"
-            className="text-primary hover:underline font-medium"
-          >
+      <CardFooter className="w-full text-center">
+        <div className="text-muted-foreground w-full text-center text-sm">
+          Vous avez déjà un compte ?{' '}
+          <Link href="/login" className="text-primary font-medium hover:underline">
             Connectez vous ici
           </Link>
         </div>
@@ -222,24 +212,22 @@ export function RegisterForm() {
 
 export function RegisterFormFallback() {
   return (
-    <Card className="overflow-hidden rounded-4xl w-full">
+    <Card className="w-full overflow-hidden rounded-4xl">
       <CardHeader>
-        <CardTitle className="text-center text-xl font-bold">
-          Inscription
-        </CardTitle>
+        <CardTitle className="text-center text-xl font-bold">Inscription</CardTitle>
         <CardDescription>
           Veuillez remplir le formulaire ci-dessous pour vous inscrire.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4 p-4">
-          <div className="h-10 bg-muted animate-pulse rounded-full" />
-          <div className="h-10 bg-muted animate-pulse rounded-full" />
-          <div className="h-10 bg-muted animate-pulse rounded-full" />
-          <div className="h-10 bg-muted animate-pulse rounded-full" />
-          <div className="h-10 bg-muted animate-pulse rounded-full" />
-          <div className="h-10 bg-muted animate-pulse rounded-full" />
-          <div className="h-10 bg-muted animate-pulse rounded-full" />
+          <div className="bg-muted h-10 animate-pulse rounded-full" />
+          <div className="bg-muted h-10 animate-pulse rounded-full" />
+          <div className="bg-muted h-10 animate-pulse rounded-full" />
+          <div className="bg-muted h-10 animate-pulse rounded-full" />
+          <div className="bg-muted h-10 animate-pulse rounded-full" />
+          <div className="bg-muted h-10 animate-pulse rounded-full" />
+          <div className="bg-muted h-10 animate-pulse rounded-full" />
         </div>
       </CardContent>
     </Card>

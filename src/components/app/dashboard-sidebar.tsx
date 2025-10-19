@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { OrganizationSwitcher } from "@/components/app/organization-switcher";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { OrganizationSwitcher } from '@/components/app/organization-switcher';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   Sidebar,
   SidebarContent,
@@ -13,17 +13,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarSeparator,
-} from "@/components/ui/sidebar";
-import {
-  Building2,
-  FileText,
-  Home,
-  LogOut,
-  Settings,
-  Users,
-} from "lucide-react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+} from '@/components/ui/sidebar';
+import { Building2, FileText, Home, LogOut, Settings, Users } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 
 interface Organization {
   id: string;
@@ -46,32 +39,28 @@ interface DashboardSidebarProps {
   user: User;
 }
 
-export function DashboardSidebar({
-  organizations,
-  currentSlug,
-  user,
-}: DashboardSidebarProps) {
+export function DashboardSidebar({ organizations, currentSlug, user }: DashboardSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
 
   const navigation = [
     {
-      name: "Tableau de bord",
+      name: 'Tableau de bord',
       href: `/dashboard/${currentSlug}`,
       icon: Home,
     },
     {
-      name: "Factures",
+      name: 'Factures',
       href: `/dashboard/${currentSlug}/invoices`,
       icon: FileText,
     },
     {
-      name: "Clients",
+      name: 'Clients',
       href: `/dashboard/${currentSlug}/clients`,
       icon: Users,
     },
     {
-      name: "Paramètres",
+      name: 'Paramètres',
       href: `/dashboard/${currentSlug}/settings`,
       icon: Settings,
     },
@@ -86,8 +75,8 @@ export function DashboardSidebar({
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild tooltip="Faktuur.io">
               <Link href={`/dashboard/${currentSlug}`}>
-                <Building2 className="h-6 w-6 text-primary" />
-                <span className="font-bold text-lg">Faktuur.io</span>
+                <Building2 className="text-primary h-6 w-6" />
+                <span className="text-lg font-bold">Faktuur.io</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -97,10 +86,7 @@ export function DashboardSidebar({
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
-            <OrganizationSwitcher
-              organizations={organizations}
-              currentSlug={currentSlug}
-            />
+            <OrganizationSwitcher organizations={organizations} currentSlug={currentSlug} />
           </SidebarGroupContent>
         </SidebarGroup>
 
@@ -113,11 +99,7 @@ export function DashboardSidebar({
                 const Icon = item.icon;
                 return (
                   <SidebarMenuItem key={item.name}>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={isActive(item.href)}
-                      tooltip={item.name}
-                    >
+                    <SidebarMenuButton asChild isActive={isActive(item.href)} tooltip={item.name}>
                       <Link href={item.href}>
                         <Icon />
                         <span>{item.name}</span>
@@ -157,14 +139,14 @@ export function DashboardSidebar({
             <SidebarMenuButton
               tooltip="Se déconnecter"
               onClick={async () => {
-                await fetch("/api/auth/sign-out", {
-                  method: "POST",
+                await fetch('/api/auth/sign-out', {
+                  method: 'POST',
                   headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'application/json',
                   },
                   body: JSON.stringify({}),
                 });
-                router.push("/");
+                router.push('/');
               }}
             >
               <LogOut />

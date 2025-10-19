@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,10 +9,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useSession } from "@/hooks/use-session";
-import { ArrowRight } from "lucide-react";
-import Link from "next/link";
+} from '@/components/ui/dropdown-menu';
+import { useSession } from '@/hooks/use-session';
+import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
 export function HeaderActionsClient() {
   const { session, isLoading } = useSession();
@@ -26,9 +26,7 @@ export function HeaderActionsClient() {
     return (
       <div className="flex items-center gap-2 sm:gap-4">
         <Link
-          href={
-            session.orgSlug ? `/dashboard/${session.orgSlug}` : "/dashboard"
-          }
+          href={session.orgSlug ? `/dashboard/${session.orgSlug}` : '/dashboard'}
           className="hidden sm:block"
         >
           <Button variant="outline" size="sm">
@@ -38,22 +36,18 @@ export function HeaderActionsClient() {
         </Link>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="flex items-center gap-2 px-2 sm:px-3"
-            >
+            <Button variant="ghost" size="sm" className="flex items-center gap-2 px-2 sm:px-3">
               <Avatar className="size-7 sm:size-8">
                 <AvatarImage src={session.user.image} alt={session.user.name} />
                 <AvatarFallback className="text-xs sm:text-sm">
                   {session.user.name
-                    .split(" ")
+                    .split(' ')
                     .map((n: string) => n[0])
-                    .join("")
+                    .join('')
                     .toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <span className="hidden md:inline-block text-sm font-medium">
+              <span className="hidden text-sm font-medium md:inline-block">
                 {session.user.name}
               </span>
             </Button>
@@ -61,23 +55,13 @@ export function HeaderActionsClient() {
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel>
               <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none">
-                  {session.user.name}
-                </p>
-                <p className="text-xs leading-none text-muted-foreground">
-                  {session.user.email}
-                </p>
+                <p className="text-sm leading-none font-medium">{session.user.name}</p>
+                <p className="text-muted-foreground text-xs leading-none">{session.user.email}</p>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link
-                href={
-                  session.orgSlug
-                    ? `/dashboard/${session.orgSlug}`
-                    : "/dashboard"
-                }
-              >
+              <Link href={session.orgSlug ? `/dashboard/${session.orgSlug}` : '/dashboard'}>
                 <ArrowRight className="mr-2 size-4" />
                 Aller sur l&apos;application
               </Link>
@@ -101,7 +85,7 @@ export function HeaderActionsClient() {
         <Button size="sm" className="px-3 sm:px-4">
           <span className="hidden sm:inline">Commencer</span>
           <span className="sm:hidden">Démarrer</span>
-          <ArrowRight className="ml-1 sm:ml-2 size-3 sm:size-4" />
+          <ArrowRight className="ml-1 size-3 sm:ml-2 sm:size-4" />
         </Button>
       </Link>
     </div>

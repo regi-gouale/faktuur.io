@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -9,29 +9,29 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { createOrganizationAction } from "@/lib/actions/organization";
-import { createOrganizationSchema } from "@/lib/schemas/organization";
-import { generateSlug } from "@/lib/utils/slug";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Building2, Loader2 } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import type { z } from "zod";
-import { LogoUploader } from "./logo-uploader";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { createOrganizationAction } from '@/lib/actions/organization';
+import { createOrganizationSchema } from '@/lib/schemas/organization';
+import { generateSlug } from '@/lib/utils/slug';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Building2, Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import type { z } from 'zod';
+import { LogoUploader } from './logo-uploader';
 
 type CreateOrganizationFormData = z.infer<typeof createOrganizationSchema>;
 
 export function CreateOrganizationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [generatedSlug, setGeneratedSlug] = useState("");
+  const [generatedSlug, setGeneratedSlug] = useState('');
 
   const form = useForm<CreateOrganizationFormData>({
     resolver: zodResolver(createOrganizationSchema),
     defaultValues: {
-      name: "",
-      logo: "",
+      name: '',
+      logo: '',
     },
   });
 
@@ -40,7 +40,7 @@ export function CreateOrganizationForm() {
     if (value.trim()) {
       setGeneratedSlug(generateSlug(value));
     } else {
-      setGeneratedSlug("");
+      setGeneratedSlug('');
     }
   };
 
@@ -51,7 +51,7 @@ export function CreateOrganizationForm() {
       await createOrganizationAction(data);
       // La redirection est gérée dans la Server Action
     } catch (error) {
-      console.error("Error creating organization:", error);
+      console.error('Error creating organization:', error);
       setIsSubmitting(false);
     }
   };
@@ -77,8 +77,7 @@ export function CreateOrganizationForm() {
                 />
               </FormControl>
               <FormDescription>
-                Le nom de votre entreprise tel qu&apos;elle apparaîtra sur vos
-                factures et devis.
+                Le nom de votre entreprise tel qu&apos;elle apparaîtra sur vos factures et devis.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -99,8 +98,7 @@ export function CreateOrganizationForm() {
                 />
               </FormControl>
               <FormDescription>
-                Ajoutez le logo de votre organisation depuis votre appareil ou
-                via une URL.
+                Ajoutez le logo de votre organisation depuis votre appareil ou via une URL.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -108,13 +106,11 @@ export function CreateOrganizationForm() {
         />
 
         {generatedSlug && (
-          <div className="rounded-lg border bg-muted/50 p-4">
+          <div className="bg-muted/50 rounded-lg border p-4">
             <div className="flex items-center gap-2 text-sm">
-              <Building2 className="h-4 w-4 text-muted-foreground" />
-              <span className="text-muted-foreground">
-                URL de votre entreprise :
-              </span>
-              <code className="font-mono bg-background px-2 py-0.5 rounded text-primary">
+              <Building2 className="text-muted-foreground h-4 w-4" />
+              <span className="text-muted-foreground">URL de votre entreprise :</span>
+              <code className="bg-background text-primary rounded px-2 py-0.5 font-mono">
                 /dashboard/{generatedSlug}
               </code>
             </div>

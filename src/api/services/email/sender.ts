@@ -1,9 +1,9 @@
-import { renderTemplate } from "@/api/services/email/templates";
-import { getEnv } from "@/lib/env";
-import { EmailPayload, EmailResponse } from "@/lib/schemas/email";
-import nodemailer from "nodemailer";
-import pLimit from "p-limit";
-import { UseSend } from "usesend-js";
+import { renderTemplate } from '@/api/services/email/templates';
+import { getEnv } from '@/lib/env';
+import { EmailPayload, EmailResponse } from '@/lib/schemas/email';
+import nodemailer from 'nodemailer';
+import pLimit from 'p-limit';
+import { UseSend } from 'usesend-js';
 
 let transporter: nodemailer.Transporter | null = null;
 let transporterConfig: ReturnType<typeof getEnv> | null = null;
@@ -18,14 +18,14 @@ function getNodemailerTransporter(): nodemailer.Transporter {
 
   // Nodemailer configuration
   const config = {
-    host: transporterConfig.SMTP_HOST || "localhost",
+    host: transporterConfig.SMTP_HOST || 'localhost',
     port: transporterConfig.SMTP_PORT || 587,
     secure: transporterConfig.SMTP_PORT === 465,
     ...(transporterConfig.SMTP_USER
       ? {
           auth: {
             user: transporterConfig.SMTP_USER,
-            pass: transporterConfig.SMTP_PASSWORD || "",
+            pass: transporterConfig.SMTP_PASSWORD || '',
           },
         }
       : {}),
@@ -41,7 +41,7 @@ function getUseSendClient(): InstanceType<typeof UseSend> {
   const env = getEnv();
 
   if (!env.USESEND_API_KEY) {
-    throw new Error("USESEND_API_KEY is not configured");
+    throw new Error('USESEND_API_KEY is not configured');
   }
 
   usesendClient = new UseSend(env.USESEND_API_KEY);
@@ -53,21 +53,20 @@ export async function sendEmail(payload: EmailPayload): Promise<EmailResponse> {
     const template = renderTemplate(payload.templateType, payload.variables);
     const env = getEnv();
 
-    if (env.EMAIL_PROVIDER === "usesend") {
+    if (env.EMAIL_PROVIDER === 'usesend') {
       return sendEmailViaUseSend(payload, template, env);
     }
 
-    if (env.EMAIL_PROVIDER === "resend") {
-      throw new Error("Resend provider not yet implemented");
+    if (env.EMAIL_PROVIDER === 'resend') {
+      throw new Error('Resend provider not yet implemented');
     }
 
     // Default to Nodemailer
     return sendEmailViaNodemailer(payload, template, env);
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "Unknown error occurred";
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
 
-    console.error("Email send error:", errorMessage);
+    console.error('Email send error:', errorMessage);
 
     return {
       success: false,
@@ -112,9 +111,7 @@ async function sendEmailViaUseSend(
     text: template.text,
   });
 
-  const messageId = String(
-    (result as Record<string, unknown>)?.messageId || "sent"
-  );
+  const messageId = String((result as Record<string, unknown>)?.messageId || 'sent');
 
   return {
     success: true,
@@ -128,7 +125,5 @@ export async function sendEmailBatch(
 ): Promise<EmailResponse[]> {
   const limit = pLimit(concurrency);
 
-  return Promise.all(
-    payloads.map((payload) => limit(() => sendEmail(payload)))
-  );
+  return Promise.all(payloads.map((payload) => limit(() => sendEmail(payload))));
 }

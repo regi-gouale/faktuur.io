@@ -172,7 +172,6 @@ Copilot should:
   ```
 
 - Environment files:
-
   - `.env.local` → SQLite for development
   - `.env.production` → PostgreSQL + live credentials
 

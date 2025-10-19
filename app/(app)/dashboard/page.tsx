@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -11,7 +11,7 @@ export default function DashboardPage() {
     const checkOrganization = async () => {
       try {
         // Récupérer la session avec orgSlug
-        const response = await fetch("/api/session");
+        const response = await fetch('/api/session');
 
         if (!response.ok) {
           // Pas de session, le layout va rediriger vers /login
@@ -22,15 +22,15 @@ export default function DashboardPage() {
 
         // Si pas d'organisation, rediriger vers création
         if (!data.orgSlug) {
-          router.push("/create-organization");
+          router.push('/create-organization');
           return;
         }
 
         // Si organisation existe, rediriger vers le dashboard de l'organisation
         router.push(`/dashboard/${data.orgSlug}`);
       } catch (error) {
-        console.error("Error checking organization:", error);
-        router.push("/create-organization");
+        console.error('Error checking organization:', error);
+        router.push('/create-organization');
       } finally {
         setIsChecking(false);
       }
@@ -44,10 +44,8 @@ export default function DashboardPage() {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-          <p className="text-muted-foreground">
-            Chargement de votre organisation...
-          </p>
+          <div className="border-primary h-12 w-12 animate-spin rounded-full border-b-2"></div>
+          <p className="text-muted-foreground">Chargement de votre organisation...</p>
         </div>
       </div>
     );

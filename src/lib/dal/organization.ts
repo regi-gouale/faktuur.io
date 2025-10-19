@@ -1,14 +1,12 @@
-import { prisma } from "@/lib/prisma";
-import { trackQueryPerformance } from "../types/monitoring";
+import { prisma } from '@/lib/prisma';
+import { trackQueryPerformance } from '../types/monitoring';
 
 /**
  * Récupère le slug de la première organisation d'un utilisateur
  * Optimisé avec sélection minimale des champs
  */
-export async function getUserFirstOrganizationSlug(
-  userId: string
-): Promise<string | undefined> {
-  return trackQueryPerformance("getUserFirstOrganizationSlug", async () => {
+export async function getUserFirstOrganizationSlug(userId: string): Promise<string | undefined> {
+  return trackQueryPerformance('getUserFirstOrganizationSlug', async () => {
     const membership = await prisma.member.findFirst({
       where: { userId },
       select: {
@@ -18,7 +16,7 @@ export async function getUserFirstOrganizationSlug(
           },
         },
       },
-      orderBy: { createdAt: "asc" },
+      orderBy: { createdAt: 'asc' },
     });
 
     return membership?.organization?.slug;
@@ -52,9 +50,7 @@ export async function isUserMemberOfOrganization(
     return membership !== null;
   } finally {
     const duration = performance.now() - start;
-    console.log(
-      `[Performance] isUserMemberOfOrganization: ${duration.toFixed(2)}ms`
-    );
+    console.log(`[Performance] isUserMemberOfOrganization: ${duration.toFixed(2)}ms`);
   }
 }
 
@@ -106,9 +102,7 @@ export async function getOrganizationForUser(
     };
   } finally {
     const duration = performance.now() - start;
-    console.log(
-      `[Performance] getOrganizationForUser: ${duration.toFixed(2)}ms`
-    );
+    console.log(`[Performance] getOrganizationForUser: ${duration.toFixed(2)}ms`);
   }
 }
 
@@ -141,7 +135,7 @@ export async function getUserOrganizations(userId: string): Promise<
           },
         },
       },
-      orderBy: { createdAt: "asc" },
+      orderBy: { createdAt: 'asc' },
     });
 
     return memberships.map((membership) => ({

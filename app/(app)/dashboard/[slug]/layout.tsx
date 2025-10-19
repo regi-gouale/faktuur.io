@@ -1,15 +1,11 @@
-import { DashboardBreadcrumb } from "@/components/app/dashboard-breadcrumb";
-import { DashboardSidebar } from "@/components/app/dashboard-sidebar";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
-import { auth } from "@/lib/auth";
-import { getUserOrganizations } from "@/lib/dal/organization";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
-import { Suspense } from "react";
+import { DashboardBreadcrumb } from '@/components/app/dashboard-breadcrumb';
+import { DashboardSidebar } from '@/components/app/dashboard-sidebar';
+import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { auth } from '@/lib/auth';
+import { getUserOrganizations } from '@/lib/dal/organization';
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -18,10 +14,7 @@ interface DashboardLayoutProps {
   }>;
 }
 
-export default async function DashboardLayout({
-  children,
-  params,
-}: DashboardLayoutProps) {
+export default async function DashboardLayout({ children, params }: DashboardLayoutProps) {
   const { slug } = await params;
 
   // Vérifier la session
@@ -30,7 +23,7 @@ export default async function DashboardLayout({
   });
 
   if (!session?.user) {
-    redirect("/login");
+    redirect('/login');
   }
 
   // Récupérer toutes les organisations de l'utilisateur
@@ -40,7 +33,7 @@ export default async function DashboardLayout({
   const currentOrganization = organizations.find((org) => org.slug === slug);
 
   if (!currentOrganization) {
-    redirect("/dashboard");
+    redirect('/dashboard');
   }
 
   return (

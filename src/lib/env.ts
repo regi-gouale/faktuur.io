@@ -1,11 +1,9 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 const envSchema = z.object({
   // Email configuration
-  EMAIL_PROVIDER: z
-    .enum(["resend", "nodemailer", "usesend"])
-    .default("nodemailer"),
-  EMAIL_FROM: z.email("Invalid email address"),
+  EMAIL_PROVIDER: z.enum(['resend', 'nodemailer', 'usesend']).default('nodemailer'),
+  EMAIL_FROM: z.email('Invalid email address'),
 
   // Resend configuration
   RESEND_API_KEY: z.string().optional(),
@@ -21,11 +19,11 @@ const envSchema = z.object({
   SMTP_PASSWORD: z.string().optional(),
 
   // Database
-  DATABASE_URL: z.url("Invalid database URL"),
+  DATABASE_URL: z.url('Invalid database URL'),
 
   // Auth
   BETTER_AUTH_SECRET: z.string(),
-  BETTER_AUTH_URL: z.url("Invalid auth URL"),
+  BETTER_AUTH_URL: z.url('Invalid auth URL'),
 });
 
 type Environment = z.infer<typeof envSchema>;
@@ -38,8 +36,8 @@ export function getEnv(): Environment {
   const result = envSchema.safeParse(process.env);
 
   if (!result.success) {
-    console.error("Environment variables validation failed:", result.error);
-    throw new Error("Invalid environment configuration");
+    console.error('Environment variables validation failed:', result.error);
+    throw new Error('Invalid environment configuration');
   }
 
   validated = result.data;

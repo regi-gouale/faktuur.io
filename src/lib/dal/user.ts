@@ -1,4 +1,4 @@
-import { syncUserToUseSendContacts } from "@/lib/dal/email";
+import { syncUserToUseSendContacts } from '@/lib/dal/email';
 
 /**
  * Data Access Layer for user operations
@@ -34,7 +34,7 @@ export async function syncUserOnRegistration(
     if (name) {
       const nameParts = name.trim().split(/\s+/);
       firstName = nameParts[0];
-      lastName = nameParts.slice(1).join(" ") || undefined;
+      lastName = nameParts.slice(1).join(' ') || undefined;
     }
 
     const result = await syncUserToUseSendContacts(email, firstName, lastName);
@@ -47,9 +47,7 @@ export async function syncUserOnRegistration(
     }
 
     // Log warning but don't fail the signup
-    console.warn(
-      `[UseSend] Failed to sync contact for ${email}: ${result.error}`
-    );
+    console.warn(`[UseSend] Failed to sync contact for ${email}: ${result.error}`);
 
     return {
       success: false,
@@ -61,7 +59,7 @@ export async function syncUserOnRegistration(
 
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Unknown error",
+      error: error instanceof Error ? error.message : 'Unknown error',
     };
   }
 }

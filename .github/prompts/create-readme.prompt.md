@@ -1,6 +1,6 @@
 ---
-mode: "agent"
-description: "Create a comprehensive README.md file for the project"
+mode: 'agent'
+description: 'Create a comprehensive README.md file for the project'
 ---
 
 ## Role

@@ -1,9 +1,6 @@
-import { sendEmail, sendEmailBatch } from "@/api/services/email";
-import {
-  addContactToUseSend,
-  type CreateContactResponse,
-} from "@/api/services/usesend";
-import { EmailPayload, EmailResponse } from "@/lib/schemas/email";
+import { sendEmail, sendEmailBatch } from '@/api/services/email';
+import { addContactToUseSend, type CreateContactResponse } from '@/api/services/usesend';
+import { EmailPayload, EmailResponse } from '@/lib/schemas/email';
 
 /**
  * Data Access Layer for email operations
@@ -17,7 +14,7 @@ export async function sendWelcomeEmail(
 ): Promise<EmailResponse> {
   return sendEmail({
     to: email,
-    templateType: "WELCOME",
+    templateType: 'WELCOME',
     variables: {
       userName,
       loginUrl,
@@ -32,7 +29,7 @@ export async function sendPasswordResetEmail(
 ): Promise<EmailResponse> {
   return sendEmail({
     to: email,
-    templateType: "PASSWORD_RESET",
+    templateType: 'PASSWORD_RESET',
     variables: {
       resetUrl,
       expiresIn,
@@ -47,7 +44,7 @@ export async function sendEmailVerificationEmail(
 ): Promise<EmailResponse> {
   return sendEmail({
     to: email,
-    templateType: "EMAIL_VERIFICATION",
+    templateType: 'EMAIL_VERIFICATION',
     variables: {
       verificationUrl,
       expiresIn,
@@ -64,7 +61,7 @@ export async function sendInvoiceReminderEmail(
 ): Promise<EmailResponse> {
   return sendEmail({
     to: email,
-    templateType: "INVOICE_REMINDER",
+    templateType: 'INVOICE_REMINDER',
     variables: {
       invoiceNumber,
       amount,
@@ -82,7 +79,7 @@ export async function sendPaymentReceivedEmail(
 ): Promise<EmailResponse> {
   return sendEmail({
     to: email,
-    templateType: "PAYMENT_RECEIVED",
+    templateType: 'PAYMENT_RECEIVED',
     variables: {
       invoiceNumber,
       amount,
@@ -91,9 +88,7 @@ export async function sendPaymentReceivedEmail(
   });
 }
 
-export async function sendBulkEmails(
-  payloads: EmailPayload[]
-): Promise<EmailResponse[]> {
+export async function sendBulkEmails(payloads: EmailPayload[]): Promise<EmailResponse[]> {
   return sendEmailBatch(payloads);
 }
 

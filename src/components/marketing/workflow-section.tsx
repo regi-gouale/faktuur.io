@@ -1,21 +1,21 @@
-import { SectionIntro } from "@/components/marketing/section-intro";
-import { Zap } from "lucide-react";
+import { SectionIntro } from '@/components/marketing/section-intro';
+import { Zap } from 'lucide-react';
 
 const workflowSteps = [
   {
-    title: "Créer",
+    title: 'Créer',
     description:
-      "Composez vos devis en quelques secondes avec des produits réutilisables et la TVA automatique.",
+      'Composez vos devis en quelques secondes avec des produits réutilisables et la TVA automatique.',
   },
   {
-    title: "Partager",
+    title: 'Partager',
     description:
-      "Envoyez un lien sécurisé ou un PDF personnalisé et suivez la lecture en temps réel.",
+      'Envoyez un lien sécurisé ou un PDF personnalisé et suivez la lecture en temps réel.',
   },
   {
-    title: "Encaisser",
+    title: 'Encaisser',
     description:
-      "Relances programmées, statut des paiements et export comptable prêts pour votre expert-comptable.",
+      'Relances programmées, statut des paiements et export comptable prêts pour votre expert-comptable.',
   },
 ] as const;
 
@@ -26,9 +26,9 @@ export function WorkflowSection() {
         <div className="flex flex-col gap-6">
           <SectionIntro
             eyebrow={{
-              label: "Workflow guidé",
-              variant: "outline",
-              className: "border-primary/30 bg-primary/10 text-primary",
+              label: 'Workflow guidé',
+              variant: 'outline',
+              className: 'border-primary/30 bg-primary/10 text-primary',
             }}
             title="Une expérience inspirée des produits Vercel"
             description="De la première estimation à l'encaissement, chaque étape est orchestrée pour vous permettre de livrer vite tout en gardant le contrôle sur vos flux financiers."
@@ -41,81 +41,65 @@ export function WorkflowSection() {
             {workflowSteps.map((step, index) => (
               <div
                 key={step.title}
-                className="flex gap-4 rounded-xl border border-border/70 bg-background/90 p-4 shadow-sm shadow-primary/5"
+                className="border-border/70 bg-background/90 shadow-primary/5 flex gap-4 rounded-xl border p-4 shadow-sm"
               >
-                <div className="flex size-10 items-center justify-center rounded-full border border-primary/40 bg-primary/10 text-sm font-semibold text-primary">
+                <div className="border-primary/40 bg-primary/10 text-primary flex size-10 items-center justify-center rounded-full border text-sm font-semibold">
                   0{index + 1}
                 </div>
                 <div className="space-y-1.5">
-                  <h3 className="text-lg font-medium text-foreground">
-                    {step.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {step.description}
-                  </p>
+                  <h3 className="text-foreground text-lg font-medium">{step.title}</h3>
+                  <p className="text-muted-foreground text-sm">{step.description}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
         <div className="relative flex items-center justify-center">
-          <div className="w-full max-w-md rounded-3xl border border-border/60 bg-background/80 p-6 shadow-xl shadow-primary/10">
+          <div className="border-border/60 bg-background/80 shadow-primary/10 w-full max-w-md rounded-3xl border p-6 shadow-xl">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-muted-foreground">
-                Vue d&apos;ensemble
-              </span>
-              <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+              <span className="text-muted-foreground text-sm font-medium">Vue d&apos;ensemble</span>
+              <span className="bg-primary/10 text-primary rounded-full px-3 py-1 text-xs font-medium">
                 Temps réel
               </span>
             </div>
             <div className="mt-6 space-y-4">
-              <div className="rounded-2xl border border-border/70 bg-muted/40 p-4">
+              <div className="border-border/70 bg-muted/40 rounded-2xl border p-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs uppercase tracking-wide text-muted-foreground">
+                  <span className="text-muted-foreground text-xs tracking-wide uppercase">
                     Revenus MRR
                   </span>
-                  <span className="text-xs font-semibold text-emerald-500">
-                    +18%
-                  </span>
+                  <span className="text-xs font-semibold text-emerald-500">+18%</span>
                 </div>
-                <p className="mt-2 text-2xl font-semibold text-foreground">
-                  7 540 €
-                </p>
+                <p className="text-foreground mt-2 text-2xl font-semibold">7 540 €</p>
               </div>
               <div className="grid gap-3">
                 {[
                   {
-                    label: "Devis signés",
-                    value: "36",
+                    label: 'Devis signés',
+                    value: '36',
                   },
                   {
-                    label: "Factures payées",
-                    value: "18",
+                    label: 'Factures payées',
+                    value: '18',
                   },
                   {
-                    label: "Paiements en retard",
-                    value: "2",
+                    label: 'Paiements en retard',
+                    value: '2',
                   },
                 ].map((item) => (
                   <div
                     key={item.label}
-                    className="flex items-center justify-between rounded-xl border border-border/70 bg-background/90 px-4 py-3"
+                    className="border-border/70 bg-background/90 flex items-center justify-between rounded-xl border px-4 py-3"
                   >
-                    <span className="text-sm font-medium text-muted-foreground">
-                      {item.label}
-                    </span>
-                    <span className="text-sm font-semibold text-foreground">
-                      {item.value}
-                    </span>
+                    <span className="text-muted-foreground text-sm font-medium">{item.label}</span>
+                    <span className="text-foreground text-sm font-semibold">{item.value}</span>
                   </div>
                 ))}
               </div>
-              <div className="flex items-center justify-between rounded-xl border border-border/60 bg-primary/10 p-4 text-primary">
+              <div className="border-border/60 bg-primary/10 text-primary flex items-center justify-between rounded-xl border p-4">
                 <div>
                   <p className="text-sm font-medium">Automations actives</p>
-                  <p className="text-xs text-primary/70">
-                    Relances intelligentes tous les 7 jours
-                  </p>
+                  <p className="text-primary/70 text-xs">Relances intelligentes tous les 7 jours</p>
                 </div>
                 <Zap className="size-5" />
               </div>

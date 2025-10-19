@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Breadcrumb,
@@ -7,10 +7,10 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Home } from "lucide-react";
-import { usePathname } from "next/navigation";
-import { Fragment } from "react";
+} from '@/components/ui/breadcrumb';
+import { Home } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { Fragment } from 'react';
 
 interface DashboardBreadcrumbProps {
   organizationSlug: string;
@@ -24,18 +24,18 @@ export function DashboardBreadcrumb({
   const pathname = usePathname();
 
   // Parse le pathname pour créer les breadcrumbs
-  const paths = pathname.split("/").filter(Boolean);
+  const paths = pathname.split('/').filter(Boolean);
 
   // Retirer 'dashboard' et le slug de l'organisation des paths
   const breadcrumbPaths = paths.slice(2); // Enlève "dashboard" et le slug
 
   // Map des noms de routes
   const routeNames: Record<string, string> = {
-    invoices: "Factures",
-    clients: "Clients",
-    settings: "Paramètres",
-    new: "Nouveau",
-    edit: "Modifier",
+    invoices: 'Factures',
+    clients: 'Clients',
+    settings: 'Paramètres',
+    new: 'Nouveau',
+    edit: 'Modifier',
   };
 
   return (
@@ -62,7 +62,7 @@ export function DashboardBreadcrumb({
           const isLast = index === breadcrumbPaths.length - 1;
           const href = `/dashboard/${organizationSlug}/${breadcrumbPaths
             .slice(0, index + 1)
-            .join("/")}`;
+            .join('/')}`;
           const name = routeNames[path] || path;
 
           return (
