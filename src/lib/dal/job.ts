@@ -1,3 +1,4 @@
+import { JobStatus, JobType } from '@/generated/prisma';
 import { prisma } from '@/lib/prisma';
 import type { Job } from '@/lib/schemas/job';
 
@@ -41,8 +42,8 @@ export async function getJobs({
 } = {}): Promise<Job[]> {
   const jobs = await prisma.job.findMany({
     where: {
-      ...(status && { status: status as any }),
-      ...(type && { type: type as any }),
+      ...(status && { status: status as JobStatus }),
+      ...(type && { type: type as JobType }),
     },
     orderBy: [{ priority: 'desc' }, { createdAt: 'desc' }],
     take: limit,

@@ -20,7 +20,10 @@ interface JobsTableProps {
 }
 
 function getStatusBadge(status: string) {
-  const variants: Record<string, { variant: any; label: string }> = {
+  const variants: Record<
+    string,
+    { variant: 'default' | 'secondary' | 'destructive' | 'outline'; label: string }
+  > = {
     PENDING: { variant: 'secondary', label: 'En attente' },
     PROCESSING: { variant: 'default', label: 'En cours' },
     COMPLETED: { variant: 'default', label: 'Terminé' },
@@ -28,7 +31,7 @@ function getStatusBadge(status: string) {
     CANCELLED: { variant: 'outline', label: 'Annulé' },
   };
 
-  const config = variants[status] || { variant: 'outline', label: status };
+  const config = variants[status] || { variant: 'outline' as const, label: status };
 
   return <Badge variant={config.variant}>{config.label}</Badge>;
 }

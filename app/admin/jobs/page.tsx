@@ -100,7 +100,7 @@ export default async function AdminJobsPage() {
       {/* Info */}
       <Card>
         <CardHeader>
-          <CardTitle>Besoin d'aide ?</CardTitle>
+          <CardTitle>Besoin d&apos;aide ?</CardTitle>
           <CardDescription>
             Consultez la documentation pour en savoir plus sur le système de tâches
           </CardDescription>

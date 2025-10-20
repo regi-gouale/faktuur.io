@@ -30,9 +30,9 @@ queueStatsRouter.get('/', async (c) => {
     );
 
     return c.json({ success: true, data: stats });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error fetching queue stats:', error);
-    return c.json({ success: false, error: error.message }, 500);
+    return c.json({ success: false, error: (error as Error).message }, 500);
   }
 });
 
@@ -60,9 +60,9 @@ queueStatsRouter.get('/:queueName', async (c) => {
         paused: counts.paused || 0,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error fetching queue stats:', error);
-    return c.json({ success: false, error: error.message }, 500);
+    return c.json({ success: false, error: (error as Error).message }, 500);
   }
 });
 
@@ -77,9 +77,9 @@ queueStatsRouter.post('/:queueName/pause', async (c) => {
     await queueManager.pause(queueName);
 
     return c.json({ success: true, message: `Queue ${queueName} mise en pause` });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error pausing queue:', error);
-    return c.json({ success: false, error: error.message }, 500);
+    return c.json({ success: false, error: (error as Error).message }, 500);
   }
 });
 
@@ -94,9 +94,9 @@ queueStatsRouter.post('/:queueName/resume', async (c) => {
     await queueManager.resume(queueName);
 
     return c.json({ success: true, message: `Queue ${queueName} reprise` });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error resuming queue:', error);
-    return c.json({ success: false, error: error.message }, 500);
+    return c.json({ success: false, error: (error as Error).message }, 500);
   }
 });
 
@@ -115,9 +115,9 @@ queueStatsRouter.post('/:queueName/clean', async (c) => {
       success: true,
       message: `Jobs nettoyés de la queue ${queueName}`,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error cleaning queue:', error);
-    return c.json({ success: false, error: error.message }, 500);
+    return c.json({ success: false, error: (error as Error).message }, 500);
   }
 });
 

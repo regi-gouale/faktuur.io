@@ -241,7 +241,7 @@ export default async function AdminJobDetailPage({ params }: AdminJobDetailPageP
         {job.payload && (
           <Card className="md:col-span-2">
             <CardHeader>
-              <CardTitle>Données d'Entrée (Payload)</CardTitle>
+              <CardTitle>Données d&apos;Entrée (Payload)</CardTitle>
               <CardDescription>Paramètres passés à la tâche</CardDescription>
             </CardHeader>
             <CardContent>
@@ -278,7 +278,7 @@ export default async function AdminJobDetailPage({ params }: AdminJobDetailPageP
                 <XCircle className="h-5 w-5" />
                 Erreur
               </CardTitle>
-              <CardDescription>Détails de l'erreur rencontrée</CardDescription>
+              <CardDescription>Détails de l&apos;erreur rencontrée</CardDescription>
             </CardHeader>
             <CardContent>
               <pre className="bg-destructive/10 text-destructive overflow-auto rounded-lg p-4 text-sm">

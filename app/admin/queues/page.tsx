@@ -42,8 +42,8 @@ export default function QueuesPage() {
       } else {
         setError(data.error);
       }
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError((err as Error).message);
     } finally {
       setLoading(false);
     }
@@ -67,8 +67,8 @@ export default function QueuesPage() {
       } else {
         alert(`Erreur: ${data.error}`);
       }
-    } catch (err: any) {
-      alert(`Erreur: ${err.message}`);
+    } catch (err: unknown) {
+      alert(`Erreur: ${(err as Error).message}`);
     }
   };
 
@@ -84,8 +84,8 @@ export default function QueuesPage() {
       } else {
         alert(`Erreur: ${data.error}`);
       }
-    } catch (err: any) {
-      alert(`Erreur: ${err.message}`);
+    } catch (err: unknown) {
+      alert(`Erreur: ${(err as Error).message}`);
     }
   };
 
@@ -106,8 +106,8 @@ export default function QueuesPage() {
       } else {
         alert(`Erreur: ${data.error}`);
       }
-    } catch (err: any) {
-      alert(`Erreur: ${err.message}`);
+    } catch (err: unknown) {
+      alert(`Erreur: ${(err as Error).message}`);
     }
   };
 

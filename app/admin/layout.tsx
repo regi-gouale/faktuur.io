@@ -1,4 +1,5 @@
 import { getAdminSession } from '@/lib/middleware/admin';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { ReactNode } from 'react';
 
@@ -41,26 +42,26 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
       {/* Navigation Admin */}
       <nav className="bg-muted/40 border-b">
         <div className="container flex gap-6 px-4 py-3">
-          <a
+          <Link
             href="/admin/jobs"
             className="text-foreground hover:text-primary text-sm font-medium transition-colors"
           >
             Gestion des Tâches
-          </a>
-          <a
+          </Link>
+          <Link
             href="/admin/queues"
             className="text-foreground hover:text-primary text-sm font-medium transition-colors"
           >
             Gestion des Queues
-          </a>
-          <a
+          </Link>
+          <Link
             href="/api/admin/queues"
             target="_blank"
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
           >
             Bull Board (externe)
-          </a>
+          </Link>
         </div>
       </nav>
 

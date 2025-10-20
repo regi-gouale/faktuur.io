@@ -32,11 +32,11 @@ async function grantAdmin(email: string) {
     console.log(`   ID: ${user.id}`);
     console.log(`   Admin: ${user.isAdmin ? '✓ Oui' : '✗ Non'}`);
     console.log(`   Créé le: ${user.createdAt.toLocaleDateString('fr-FR')}\n`);
-  } catch (error: any) {
-    if (error.code === 'P2025') {
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'P2025') {
       console.error(`\n❌ Erreur: Aucun utilisateur trouvé avec l'email "${email}"\n`);
     } else {
-      console.error('\n❌ Erreur:', error.message, '\n');
+      console.error('\n❌ Erreur:', (error as Error).message, '\n');
     }
     process.exit(1);
   }
@@ -61,11 +61,11 @@ async function revokeAdmin(email: string) {
     console.log(`   Email: ${user.email}`);
     console.log(`   ID: ${user.id}`);
     console.log(`   Admin: ${user.isAdmin ? '✓ Oui' : '✗ Non'}\n`);
-  } catch (error: any) {
-    if (error.code === 'P2025') {
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'P2025') {
       console.error(`\n❌ Erreur: Aucun utilisateur trouvé avec l'email "${email}"\n`);
     } else {
-      console.error('\n❌ Erreur:', error.message, '\n');
+      console.error('\n❌ Erreur:', (error as Error).message, '\n');
     }
     process.exit(1);
   }
@@ -98,8 +98,8 @@ async function listAdmins() {
       console.log(`   Créé le: ${admin.createdAt.toLocaleDateString('fr-FR')}`);
     });
     console.log('\n' + '─'.repeat(80) + '\n');
-  } catch (error: any) {
-    console.error('\n❌ Erreur:', error.message, '\n');
+  } catch (error: unknown) {
+    console.error('\n❌ Erreur:', (error as Error).message, '\n');
     process.exit(1);
   }
 }
