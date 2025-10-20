@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
-import Link from "next/link";
-import { useState } from "react";
+import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Menu } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
 
 interface NavLink {
   href: string;
@@ -23,7 +23,7 @@ export function MobileNav({ navLinks }: MobileNavProps) {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Escape") {
+    if (e.key === 'Escape') {
       setOpen(false);
     }
   };
@@ -43,17 +43,13 @@ export function MobileNav({ navLinks }: MobileNavProps) {
         </Button>
       </SheetTrigger>
       <SheetContent side="right" className="w-full sm:w-80">
-        <nav
-          id="mobile-nav-menu"
-          className="flex flex-col gap-4 pt-8"
-          onKeyDown={handleKeyDown}
-        >
+        <nav id="mobile-nav-menu" className="flex flex-col gap-4 pt-8" onKeyDown={handleKeyDown}>
           {navLinks.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               onClick={handleNavigation}
-              className="text-base font-medium text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded px-2 py-1"
+              className="text-foreground hover:text-primary focus-visible:ring-primary rounded px-2 py-1 text-base font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
               {item.label}
             </Link>

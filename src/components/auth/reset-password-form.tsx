@@ -1,13 +1,7 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Form,
   FormControl,
@@ -15,42 +9,40 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { resetPasswordSchema } from "@/lib/schemas/user";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { resetPasswordSchema } from '@/lib/schemas/user';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 export function ResetPasswordForm() {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
   const form = useForm<z.infer<typeof resetPasswordSchema>>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
-      password: password || "",
-      confirmPassword: confirmPassword || "",
+      password: password || '',
+      confirmPassword: confirmPassword || '',
     },
   });
   const router = useRouter();
 
-  const token = searchParams.get("token");
+  const token = searchParams.get('token');
 
   if (!token) {
     return (
-      <Card className="overflow-hidden rounded-4xl w-full">
+      <Card className="w-full overflow-hidden rounded-4xl">
         <CardHeader>
           <CardTitle className="text-center text-xl font-bold">
             Réinitialiser votre mot de passe
           </CardTitle>
-          <CardDescription>
-            Le lien de réinitialisation est invalide ou a expiré.
-          </CardDescription>
+          <CardDescription>Le lien de réinitialisation est invalide ou a expiré.</CardDescription>
         </CardHeader>
       </Card>
     );
@@ -59,10 +51,10 @@ export function ResetPasswordForm() {
   const onSubmit = async (data: z.infer<typeof resetPasswordSchema>) => {
     setIsLoading(true);
 
-    const result = await fetch("/api/auth/reset-password", {
-      method: "POST",
+    const result = await fetch('/api/auth/reset-password', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         token: token,
@@ -71,32 +63,27 @@ export function ResetPasswordForm() {
     });
 
     if (!result.ok) {
-      toast.error("Une erreur est survenue. Veuillez réessayer.");
+      toast.error('Une erreur est survenue. Veuillez réessayer.');
       setIsLoading(false);
       return;
     }
-    toast.success("Mot de passe réinitialisé avec succès !");
+    toast.success('Mot de passe réinitialisé avec succès !');
     form.reset();
     setIsLoading(false);
-    router.push("/login");
+    router.push('/login');
   };
 
   return (
-    <Card className="overflow-hidden rounded-4xl w-full">
+    <Card className="w-full overflow-hidden rounded-4xl">
       <CardHeader>
         <CardTitle className="text-center text-xl font-bold">
           Réinitialiser votre mot de passe
         </CardTitle>
-        <CardDescription>
-          Veuillez entrer votre nouveau mot de passe ci-dessous.
-        </CardDescription>
+        <CardDescription>Veuillez entrer votre nouveau mot de passe ci-dessous.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form
-            className="space-y-4 p-4"
-            onSubmit={form.handleSubmit(onSubmit)}
-          >
+          <form className="space-y-4 p-4" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
               name="password"
@@ -146,11 +133,9 @@ export function ResetPasswordForm() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full rounded-full mt-4 cursor-pointer"
+              className="mt-4 w-full cursor-pointer rounded-full"
             >
-              {isLoading
-                ? "Réinitialisation..."
-                : "Réinitialiser le mot de passe"}
+              {isLoading ? 'Réinitialisation...' : 'Réinitialiser le mot de passe'}
             </Button>
           </form>
         </Form>
@@ -161,14 +146,12 @@ export function ResetPasswordForm() {
 
 export const ResetPasswordFormFallback = () => {
   return (
-    <Card className="overflow-hidden rounded-4xl w-full">
+    <Card className="w-full overflow-hidden rounded-4xl">
       <CardHeader>
         <CardTitle className="text-center text-xl font-bold">
           Réinitialiser votre mot de passe
         </CardTitle>
-        <CardDescription>
-          Veuillez entrer votre nouveau mot de passe ci-dessous.
-        </CardDescription>
+        <CardDescription>Veuillez entrer votre nouveau mot de passe ci-dessous.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4 p-4">

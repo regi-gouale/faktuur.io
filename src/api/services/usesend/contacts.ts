@@ -1,5 +1,5 @@
-import { getEnv } from "@/lib/env";
-import { UseSend } from "usesend-js";
+import { getEnv } from '@/lib/env';
+import { UseSend } from 'usesend-js';
 
 let usesendClient: InstanceType<typeof UseSend> | null = null;
 
@@ -9,7 +9,7 @@ function getUseSendClient(): InstanceType<typeof UseSend> {
   const env = getEnv();
 
   if (!env.USESEND_API_KEY) {
-    throw new Error("USESEND_API_KEY is not configured");
+    throw new Error('USESEND_API_KEY is not configured');
   }
 
   usesendClient = new UseSend(env.USESEND_API_KEY);
@@ -39,21 +39,19 @@ export async function addContactToUseSend(
     const env = getEnv();
 
     // Only proceed if UseSend is enabled
-    if (env.EMAIL_PROVIDER !== "usesend") {
+    if (env.EMAIL_PROVIDER !== 'usesend') {
       return {
         success: true, // Not an error - just not applicable
-        error: "UseSend is not the active email provider",
+        error: 'UseSend is not the active email provider',
       };
     }
 
     // Contact book ID is required
     if (!env.USESEND_CONTACT_BOOK_ID) {
-      console.warn(
-        "USESEND_CONTACT_BOOK_ID not configured. Skipping contact creation."
-      );
+      console.warn('USESEND_CONTACT_BOOK_ID not configured. Skipping contact creation.');
       return {
         success: true, // Not an error - just skipped
-        error: "USESEND_CONTACT_BOOK_ID not configured",
+        error: 'USESEND_CONTACT_BOOK_ID not configured',
       };
     }
 
@@ -72,10 +70,9 @@ export async function addContactToUseSend(
         : (contact as unknown as string),
     };
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "Unknown error occurred";
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
 
-    console.error("Error adding contact to UseSend:", errorMessage);
+    console.error('Error adding contact to UseSend:', errorMessage);
 
     return {
       success: false,
@@ -95,21 +92,19 @@ export async function updateContactInUseSend(
     const env = getEnv();
 
     // Only proceed if UseSend is enabled
-    if (env.EMAIL_PROVIDER !== "usesend") {
+    if (env.EMAIL_PROVIDER !== 'usesend') {
       return {
         success: true,
-        error: "UseSend is not the active email provider",
+        error: 'UseSend is not the active email provider',
       };
     }
 
     // Contact book ID is required
     if (!env.USESEND_CONTACT_BOOK_ID) {
-      console.warn(
-        "USESEND_CONTACT_BOOK_ID not configured. Skipping contact update."
-      );
+      console.warn('USESEND_CONTACT_BOOK_ID not configured. Skipping contact update.');
       return {
         success: true,
-        error: "USESEND_CONTACT_BOOK_ID not configured",
+        error: 'USESEND_CONTACT_BOOK_ID not configured',
       };
     }
 
@@ -120,21 +115,16 @@ export async function updateContactInUseSend(
     if (input.lastName) updateData.lastName = input.lastName;
     if (input.email) updateData.email = input.email;
 
-    await usesend.contacts.update(
-      env.USESEND_CONTACT_BOOK_ID,
-      contactId,
-      updateData
-    );
+    await usesend.contacts.update(env.USESEND_CONTACT_BOOK_ID, contactId, updateData);
 
     return {
       success: true,
       contactId,
     };
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "Unknown error occurred";
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
 
-    console.error("Error updating contact in UseSend:", errorMessage);
+    console.error('Error updating contact in UseSend:', errorMessage);
 
     return {
       success: false,

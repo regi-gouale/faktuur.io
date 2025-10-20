@@ -183,6 +183,10 @@ pnpm db:migrate       # Lancer migrations
 pnpm db:seed          # Initialiser données
 pnpm studio           # Ouvrir Prisma Studio
 
+# Queue (BullMQ)
+pnpm queue:worker     # Démarrer worker (production)
+pnpm queue:dev        # Démarrer worker (dev, watch mode)
+
 # Testing
 pnpm test             # Tests Playwright
 pnpm test:ui          # Mode UI des tests
@@ -192,6 +196,9 @@ pnpm test:debug       # Mode debug
 pnpm lint             # ESLint
 pnpm format           # Prettier
 pnpm type-check       # TypeScript
+
+# Deployment
+pnpm check:deployment # Vérifier config avant déploiement
 ```
 
 ---
@@ -300,6 +307,77 @@ Décrivez:
 - ❌ Le comportement observé
 - 📋 Étapes pour reproduire
 - 💻 Votre environnement
+
+---
+
+## 🚀 Déploiement
+
+### Production sur Coolify
+
+Faktuur.io est déployé sur Coolify avec une architecture à 2 services :
+
+1. **Application Next.js** (port 3000)
+2. **Worker BullMQ** (background tasks)
+
+**Documentation complète :**
+
+- 📖 **[Guide Complet Coolify](./docs/COOLIFY_DEPLOYMENT.md)** - Documentation exhaustive
+- ⚡ **[Démarrage Rapide](./docs/COOLIFY_QUICKSTART.md)** - Déploiement en 5 minutes
+- 🔧 **[Configuration Worker](./docs/QUEUE_WORKER_ENV.md)** - Variables d'environnement
+- 📚 **[Index Documentation](./docs/DEPLOYMENT.md)** - Vue d'ensemble
+
+**Vérification pré-déploiement :**
+
+```bash
+pnpm check:deployment
+```
+
+Ce script valide toutes les variables d'environnement et détecte les erreurs de configuration avant le déploiement.
+
+**Services requis :**
+
+- PostgreSQL 12+ (base de données)
+- Redis 6+ (queue backend)
+- Node.js 20+ (runtime)
+
+**Variables d'environnement essentielles :**
+
+```env
+# Production
+NODE_ENV=production
+DATABASE_URL=postgresql://user:pass@host:5432/faktuur_db
+BETTER_AUTH_SECRET=<32+ caractères>
+BETTER_AUTH_URL=https://faktuur.io
+
+# Email
+EMAIL_FROM=noreply@faktuur.io
+EMAIL_PROVIDER=usesend
+USESEND_API_KEY=<votre-clé>
+
+# Queue (BullMQ)
+REDIS_HOST=faktuur-redis
+REDIS_PORT=6379
+QUEUE_CONCURRENCY=5
+```
+
+**Commandes de déploiement :**
+
+```bash
+# Build
+pnpm install
+pnpm prisma generate
+pnpm build
+
+# Migrations
+pnpm prisma migrate deploy
+
+# Créer un admin
+pnpm tsx scripts/manage-admin.ts grant email@example.com
+
+# Démarrer
+pnpm start                 # Application
+pnpm queue:worker          # Worker (process séparé)
+```
 
 ---
 

@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { Sidebar } from "@/components/ui/sidebar";
-import { ComponentProps, useEffect, useState } from "react";
+import { Sidebar } from '@/components/ui/sidebar';
+import { ComponentProps, useEffect, useState } from 'react';
 
-export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
+export function AppSidebar(props: ComponentProps<typeof Sidebar>) {
   const [data, setData] = useState<Record<string, unknown> | null>(null);
   useEffect(() => {
     const fetchSession = async () => {
-      const response = await fetch("/api/auth/get-session");
+      const response = await fetch('/api/auth/get-session');
       const data = await response.json();
-      console.log("Session", { data });
+      console.log('Session', { data });
       setData(data);
     };
     const fetchOrganizations = async () => {
-      const response = await fetch("/api/auth/organization/list");
+      const response = await fetch('/api/auth/organization/list');
       const data = await response.json();
-      console.log("Organizations", { data });
+      console.log('Organizations', { data });
       // setData(data);
     };
     fetchSession();
@@ -23,7 +23,7 @@ export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
   }, []);
 
   if (!data) {
-    return;
+    return <Sidebar {...props} />;
   }
 
   if (data.session) {

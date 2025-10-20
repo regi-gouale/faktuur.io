@@ -3,4 +3,4 @@ export {
   updateContactInUseSend,
   type CreateContactInput,
   type CreateContactResponse,
-} from "./contacts";
+} from './contacts';

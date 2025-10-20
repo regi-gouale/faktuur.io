@@ -1,14 +1,14 @@
-import { Badge } from "@/components/ui/badge";
-import type { MarketingEyebrow } from "@/lib/types/marketing";
-import { cn } from "@/lib/utils";
-import { createElement } from "react";
+import { Badge } from '@/components/ui/badge';
+import type { MarketingEyebrow } from '@/lib/types/marketing';
+import { cn } from '@/lib/utils';
+import { createElement } from 'react';
 
 interface SectionIntroProps {
   readonly eyebrow?: MarketingEyebrow;
   readonly title: string;
   readonly description?: string;
-  readonly align?: "start" | "center";
-  readonly titleTag?: "h1" | "h2" | "h3";
+  readonly align?: 'start' | 'center';
+  readonly titleTag?: 'h1' | 'h2' | 'h3';
   readonly className?: string;
   readonly titleClassName?: string;
   readonly descriptionClassName?: string;
@@ -18,30 +18,27 @@ export function SectionIntro({
   eyebrow,
   title,
   description,
-  align = "center",
-  titleTag = "h2",
+  align = 'center',
+  titleTag = 'h2',
   className,
   titleClassName,
   descriptionClassName,
 }: SectionIntroProps) {
-  const alignmentClass =
-    align === "center" ? "mx-auto text-center" : "text-left";
-  const baseWidthClass = align === "center" ? "max-w-3xl" : "max-w-3xl";
+  const alignmentClass = align === 'center' ? 'mx-auto text-center' : 'text-left';
+  const baseWidthClass = align === 'center' ? 'max-w-3xl' : 'max-w-3xl';
 
   return (
-    <div className={cn("space-y-6", alignmentClass, baseWidthClass, className)}>
+    <div className={cn('space-y-6', alignmentClass, baseWidthClass, className)}>
       {eyebrow ? (
         <Badge
-          variant={eyebrow.variant ?? "secondary"}
+          variant={eyebrow.variant ?? 'secondary'}
           className={cn(
-            "inline-flex items-center gap-2 rounded-full border border-border/80 bg-background/80 px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm shadow-primary/10 backdrop-blur",
+            'border-border/80 bg-background/80 text-muted-foreground shadow-primary/10 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium shadow-sm backdrop-blur',
             eyebrow.className
           )}
         >
           {eyebrow.icon ? (
-            <eyebrow.icon
-              className={cn("h-3.5 w-3.5 text-primary", eyebrow.iconClassName)}
-            />
+            <eyebrow.icon className={cn('text-primary h-3.5 w-3.5', eyebrow.iconClassName)} />
           ) : null}
           {eyebrow.label}
         </Badge>
@@ -51,7 +48,7 @@ export function SectionIntro({
         titleTag,
         {
           className: cn(
-            "text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl",
+            'text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl',
             titleClassName
           ),
         },
@@ -59,11 +56,7 @@ export function SectionIntro({
       )}
 
       {description ? (
-        <p
-          className={cn("text-lg text-muted-foreground", descriptionClassName)}
-        >
-          {description}
-        </p>
+        <p className={cn('text-muted-foreground text-lg', descriptionClassName)}>{description}</p>
       ) : null}
     </div>
   );

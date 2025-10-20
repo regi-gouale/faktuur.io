@@ -1,4 +1,4 @@
-import Script from "next/script";
+import Script from 'next/script';
 
 interface PricingStructuredDataProps {
   plans: Array<{
@@ -12,61 +12,57 @@ interface PricingStructuredDataProps {
 
 export function PricingStructuredData({ plans }: PricingStructuredDataProps) {
   const offers = plans.map((plan) => {
-    const priceValue =
-      plan.price === "Sur devis" ? "0" : plan.price.replace("€", "");
+    const priceValue = plan.price === 'Sur devis' ? '0' : plan.price.replace('€', '');
 
     return {
-      "@type": "Offer",
+      '@type': 'Offer',
       name: `Plan ${plan.name}`,
       description: plan.description,
       price: priceValue,
-      priceCurrency: "EUR",
+      priceCurrency: 'EUR',
       priceSpecification: {
-        "@type": "UnitPriceSpecification",
+        '@type': 'UnitPriceSpecification',
         price: priceValue,
-        priceCurrency: "EUR",
+        priceCurrency: 'EUR',
         referenceQuantity: {
-          "@type": "QuantityValue",
-          value: "1",
-          unitCode: "MON",
+          '@type': 'QuantityValue',
+          value: '1',
+          unitCode: 'MON',
         },
       },
     };
   });
 
   const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: "faktuur.io",
-    description:
-      "Logiciel de facturation pour freelances et auto-entrepreneurs",
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: 'faktuur.io',
+    description: 'Logiciel de facturation pour freelances et auto-entrepreneurs',
     offers: offers,
     aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.9",
-      ratingCount: "127",
-      bestRating: "5",
-      worstRating: "1",
+      '@type': 'AggregateRating',
+      ratingValue: '4.9',
+      ratingCount: '127',
+      bestRating: '5',
+      worstRating: '1',
     },
   };
 
   const breadcrumbLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
     itemListElement: [
       {
-        "@type": "ListItem",
+        '@type': 'ListItem',
         position: 1,
-        name: "Accueil",
-        item: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+        name: 'Accueil',
+        item: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
       },
       {
-        "@type": "ListItem",
+        '@type': 'ListItem',
         position: 2,
-        name: "Tarifs",
-        item: `${
-          process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
-        }/pricing`,
+        name: 'Tarifs',
+        item: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/pricing`,
       },
     ],
   };

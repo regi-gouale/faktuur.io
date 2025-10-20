@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Users } from 'lucide-react';
 
 export default function ClientsPage() {
   return (
@@ -17,9 +17,7 @@ export default function ClientsPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground">
-            Aucun client pour le moment
-          </p>
+          <p className="text-muted-foreground text-sm">Aucun client pour le moment</p>
         </CardContent>
       </Card>
     </div>

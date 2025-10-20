@@ -9,13 +9,13 @@ export function generateSlug(text: string): string {
       .toLowerCase()
       .trim()
       // Remplace les caractères accentués
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
       // Remplace les espaces et caractères spéciaux par des tirets
-      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/[^a-z0-9]+/g, '-')
       // Supprime les tirets multiples
-      .replace(/-+/g, "-")
+      .replace(/-+/g, '-')
       // Supprime les tirets au début et à la fin
-      .replace(/^-|-$/g, "")
+      .replace(/^-|-$/g, '')
   );
 }

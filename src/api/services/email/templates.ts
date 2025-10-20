@@ -1,4 +1,4 @@
-import { EmailTemplate } from "@/lib/schemas/email";
+import { EmailTemplate } from '@/lib/schemas/email';
 
 export interface TemplateData {
   subject: string;
@@ -26,10 +26,8 @@ export function renderTemplate(
   return renderer();
 }
 
-function renderWelcomeTemplate(
-  variables: Record<string, string | number | boolean>
-): TemplateData {
-  const userName = variables.userName || "User";
+function renderWelcomeTemplate(variables: Record<string, string | number | boolean>): TemplateData {
+  const userName = variables.userName || 'User';
 
   return {
     subject: `Bienvenue sur Faktuur.io, ${userName}!`,
@@ -64,7 +62,7 @@ function renderPasswordResetTemplate(
   variables: Record<string, string | number | boolean>
 ): TemplateData {
   return {
-    subject: "Réinitialiser votre mot de passe Faktuur.io",
+    subject: 'Réinitialiser votre mot de passe Faktuur.io',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h1>Réinitialiser votre mot de passe</h1>
@@ -74,7 +72,7 @@ function renderPasswordResetTemplate(
         }" style="display: inline-block; padding: 10px 20px; background-color: #3b82f6; color: white; text-decoration: none; border-radius: 5px;">Réinitialiser le mot de passe</a></p>
         <p style="color: #666; font-size: 12px;">Ce lien expire dans ${
           variables.expiresIn
-        } heure${(variables.expiresIn as number) > 1 ? "s" : ""}.</p>
+        } heure${(variables.expiresIn as number) > 1 ? 's' : ''}.</p>
         <p style="color: #666; font-size: 12px;">Si vous n'avez pas demandé cette réinitialisation, ignorez cet email.</p>
         <hr />
         <p style="color: #666; font-size: 12px;">© 2025 Faktuur.io. Tous droits réservés.</p>
@@ -100,7 +98,7 @@ function renderEmailVerificationTemplate(
   variables: Record<string, string | number | boolean>
 ): TemplateData {
   return {
-    subject: "Vérifiez votre adresse email sur Faktuur.io",
+    subject: 'Vérifiez votre adresse email sur Faktuur.io',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h1>Vérifiez votre adresse email</h1>

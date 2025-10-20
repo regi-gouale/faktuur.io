@@ -1,14 +1,12 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Settings } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Settings } from 'lucide-react';
 
 export default function SettingsPage() {
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Paramètres</h1>
-        <p className="text-muted-foreground">
-          Gérez les paramètres de votre organisation
-        </p>
+        <p className="text-muted-foreground">Gérez les paramètres de votre organisation</p>
       </div>
 
       <Card>
@@ -19,9 +17,7 @@ export default function SettingsPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground">
-            Paramètres de l'organisation à venir
-          </p>
+          <p className="text-muted-foreground text-sm">Paramètres de l&apos;organisation à venir</p>
         </CardContent>
       </Card>
     </div>

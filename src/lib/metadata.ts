@@ -1,20 +1,19 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
 const DESCRIPTION =
-  "Créez vos devis et factures en ligne gratuitement. Logiciel simple et intuitif pour freelances, auto-entrepreneurs et TPE. Envoi par email, export PDF, suivi des paiements. Conforme à la réglementation française.";
+  'Créez vos devis et factures en ligne gratuitement. Logiciel simple et intuitif pour freelances, auto-entrepreneurs et TPE. Envoi par email, export PDF, suivi des paiements. Conforme à la réglementation française.';
 
-const TITLE =
-  "Logiciel de facturation gratuit pour freelances et auto-entrepreneurs";
+const TITLE = 'Logiciel de facturation gratuit pour freelances et auto-entrepreneurs';
 
 const KEYWORDS = [
-  "logiciel facturation gratuit",
-  "créer facture en ligne",
-  "devis gratuit",
-  "facturation freelance",
-  "logiciel devis auto-entrepreneur",
-  "gestion facturation TPE",
-  "facture conforme",
-  "suivi paiement facture",
+  'logiciel facturation gratuit',
+  'créer facture en ligne',
+  'devis gratuit',
+  'facturation freelance',
+  'logiciel devis auto-entrepreneur',
+  'gestion facturation TPE',
+  'facture conforme',
+  'suivi paiement facture',
 ] as const satisfies ReadonlyArray<string>;
 
 export const marketingMetadata: Metadata = {
@@ -22,19 +21,17 @@ export const marketingMetadata: Metadata = {
   description: DESCRIPTION,
   keywords: [...KEYWORDS],
   alternates: {
-    canonical: "/",
+    canonical: '/',
   },
   openGraph: {
-    title: "faktuur.io - Logiciel de facturation pour freelances",
+    title: 'faktuur.io - Logiciel de facturation pour freelances',
     description: DESCRIPTION,
-    url: "/",
-    type: "website",
+    url: '/',
+    type: 'website',
   },
 };
 
-export function buildMarketingMetadata(
-  overrides?: Partial<Metadata>
-): Metadata {
+export function buildMarketingMetadata(overrides?: Partial<Metadata>): Metadata {
   return {
     ...marketingMetadata,
     ...overrides,
@@ -43,11 +40,11 @@ export function buildMarketingMetadata(
       ...overrides?.openGraph,
     },
     twitter: {
-      card: "summary_large_image",
+      card: 'summary_large_image',
       title: overrides?.title ?? TITLE,
       description: overrides?.description ?? DESCRIPTION,
-      images: ["/og-image.png"],
-      creator: "@faktuur_io",
+      images: ['/og-image.png'],
+      creator: '@faktuur_io',
       ...overrides?.twitter,
     },
   };

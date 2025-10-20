@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -14,6 +14,7 @@ model User {
   email         String
   emailVerified Boolean   @default(false)
   image         String?
+  isAdmin       Boolean   @default(false)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @default(now()) @updatedAt
   sessions      Session[]
@@ -21,6 +22,7 @@ model User {
 
   members     Member[]
   invitations Invitation[]
+  jobs        Job[]
 
   @@unique([email])
   @@map("user")
@@ -82,6 +84,7 @@ model Organization {
   metadata    String?
   members     Member[]
   invitations Invitation[]
+  jobs        Job[]
 
   addressId   String?
   address     Address? @relation(fields: [addressId], references: [id])
@@ -132,4 +135,70 @@ model Address {
   Organization Organization[]
 
   @@map("address")
+}
+
+enum JobStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum JobType {
+  SEND_EMAIL
+  GENERATE_PDF
+  SEND_REMINDER
+  CLEANUP_SESSIONS
+  GENERATE_REPORT
+}
+
+model Job {
+  id       String    @id @default(cuid())
+  type     JobType
+  status   JobStatus @default(PENDING)
+  priority Int       @default(0)
+
+  // Payload
+  payload String
+
+  // Résultat
+  result String?
+  error  String?
+
+  // Retry
+  attempts    Int @default(0)
+  maxAttempts Int @default(3)
+
+  // Timestamps
+  createdAt   DateTime  @default(now())
+  scheduledAt DateTime?
+  startedAt   DateTime?
+  completedAt DateTime?
+
+  // Relations
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([status, scheduledAt])
+  @@index([type, status])
+  @@index([userId])
+  @@map("job")
+}
+
+model CronJob {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  schedule    String
+  enabled     Boolean   @default(true)
+  lastRunAt   DateTime?
+  nextRunAt   DateTime?
+  failedCount Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("cron_job")
 }

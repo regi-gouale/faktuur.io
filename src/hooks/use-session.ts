@@ -1,7 +1,7 @@
 // hooks/use-session.ts
-"use client";
+'use client';
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from '@tanstack/react-query';
 
 interface User {
   name: string;
@@ -15,14 +15,14 @@ interface Session {
 }
 
 async function fetchSession(): Promise<Session | null> {
-  const response = await fetch("/api/auth/get-session");
+  const response = await fetch('/api/auth/get-session');
 
   if (response.status === 401) {
     return null;
   }
 
   if (!response.ok) {
-    throw new Error("Erreur lors de la récupération de la session");
+    throw new Error('Erreur lors de la récupération de la session');
   }
 
   const data = await response.json();
@@ -47,7 +47,7 @@ export function useSession() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["session"],
+    queryKey: ['session'],
     queryFn: fetchSession,
     staleTime: 5 * 60 * 1000, // 5 minutes - correspond au cookieCache de better-auth
     retry: 1,

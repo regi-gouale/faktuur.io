@@ -1,6 +1,6 @@
 ---
-mode: "agent"
-description: "Perform a comprehensive code review"
+mode: 'agent'
+description: 'Perform a comprehensive code review'
 ---
 
 ## Role

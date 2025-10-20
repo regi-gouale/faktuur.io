@@ -1,15 +1,10 @@
-"use client";
+'use client';
 
-import {
-  AlertTriangle,
-  ArrowLeft,
-  ClipboardCopy,
-  RefreshCw,
-} from "lucide-react";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { AlertTriangle, ArrowLeft, ClipboardCopy, RefreshCw } from 'lucide-react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Empty,
   EmptyContent,
@@ -17,14 +12,14 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@/components/ui/empty";
+} from '@/components/ui/empty';
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
   InputGroupText,
-} from "@/components/ui/input-group";
+} from '@/components/ui/input-group';
 import {
   Item,
   ItemActions,
@@ -32,7 +27,7 @@ import {
   ItemDescription,
   ItemMedia,
   ItemTitle,
-} from "@/components/ui/item";
+} from '@/components/ui/item';
 
 export default function Error({
   error,
@@ -48,11 +43,7 @@ export default function Error({
   }, [error]);
 
   const handleCopyDigest = async () => {
-    if (
-      !error.digest ||
-      typeof navigator === "undefined" ||
-      !("clipboard" in navigator)
-    ) {
+    if (!error.digest || typeof navigator === 'undefined' || !('clipboard' in navigator)) {
       return;
     }
 
@@ -64,7 +55,7 @@ export default function Error({
         setCopied(false);
       }, 2000);
     } catch (copyError) {
-      console.warn("Unable to copy error digest", copyError);
+      console.warn('Unable to copy error digest', copyError);
     }
   };
 
@@ -75,23 +66,21 @@ export default function Error({
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(239,68,68,0.1),_transparent_70%)]"
       />
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-0 size-[520px] -translate-x-1/2 rounded-full bg-destructive/20 blur-3xl" />
-        <div className="absolute -right-24 bottom-0 size-[360px] rounded-full bg-primary/10 blur-3xl" />
+        <div className="bg-destructive/20 absolute top-0 left-1/2 size-[520px] -translate-x-1/2 rounded-full blur-3xl" />
+        <div className="bg-primary/10 absolute -right-24 bottom-0 size-[360px] rounded-full blur-3xl" />
       </div>
-      <Empty className="relative z-10 mx-auto w-full max-w-xl rounded-3xl border border-border/60 bg-card/85 p-12 text-center shadow-2xl backdrop-blur">
+      <Empty className="border-border/60 bg-card/85 relative z-10 mx-auto w-full max-w-xl rounded-3xl border p-12 text-center shadow-2xl backdrop-blur">
         <EmptyMedia
           variant="icon"
-          className="size-20 rounded-2xl bg-destructive/10 text-destructive"
+          className="bg-destructive/10 text-destructive size-20 rounded-2xl"
         >
           <AlertTriangle className="size-10" aria-hidden="true" />
         </EmptyMedia>
         <EmptyHeader>
-          <EmptyTitle className="text-3xl font-semibold">
-            Quelque chose s’est mal passé
-          </EmptyTitle>
+          <EmptyTitle className="text-3xl font-semibold">Quelque chose s’est mal passé</EmptyTitle>
           <EmptyDescription className="text-base leading-relaxed">
             {error.message ||
-              "Une erreur inattendue est survenue. Réessayez ou tentez une autre action."}
+              'Une erreur inattendue est survenue. Réessayez ou tentez une autre action.'}
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
@@ -110,16 +99,13 @@ export default function Error({
 
           <Item variant="muted" className="mt-6 rounded-xl">
             <ItemMedia>
-              <AlertTriangle
-                className="size-6 text-destructive"
-                aria-hidden="true"
-              />
+              <AlertTriangle className="text-destructive size-6" aria-hidden="true" />
             </ItemMedia>
             <ItemContent>
               <ItemTitle>Besoin d’un coup de main&nbsp;?</ItemTitle>
               <ItemDescription>
-                Consultez la base de connaissances ou contactez votre
-                administrateur pour obtenir une aide rapide.
+                Consultez la base de connaissances ou contactez votre administrateur pour obtenir
+                une aide rapide.
               </ItemDescription>
             </ItemContent>
             <ItemActions>
@@ -131,10 +117,10 @@ export default function Error({
 
           {(error.digest || error.message) && (
             <details className="group mt-6 w-full text-left">
-              <summary className="cursor-pointer text-xs font-medium uppercase tracking-wide text-muted-foreground/70 transition-colors group-open:text-muted-foreground">
+              <summary className="text-muted-foreground/70 group-open:text-muted-foreground cursor-pointer text-xs font-medium tracking-wide uppercase transition-colors">
                 Voir les détails techniques
               </summary>
-              <div className="mt-4 space-y-3 rounded-2xl border border-border/60 bg-background/80 p-4">
+              <div className="border-border/60 bg-background/80 mt-4 space-y-3 rounded-2xl border p-4">
                 {error.message && (
                   <Item variant="outline" size="sm" className="rounded-lg">
                     <ItemContent>
@@ -165,8 +151,8 @@ export default function Error({
                       >
                         <ClipboardCopy className="size-4" aria-hidden="true" />
                       </InputGroupButton>
-                      <InputGroupText className="text-xs text-muted-foreground">
-                        {copied ? "Copié" : "Copier"}
+                      <InputGroupText className="text-muted-foreground text-xs">
+                        {copied ? 'Copié' : 'Copier'}
                       </InputGroupText>
                     </InputGroupAddon>
                   </InputGroup>

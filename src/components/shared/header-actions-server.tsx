@@ -1,4 +1,4 @@
-import { HeaderActionsClient } from "./header-actions-client";
+import { HeaderActionsClient } from './header-actions-client';
 
 export async function HeaderActionsServer() {
   // Le composant client récupère les données d'authentification via le hook useSession

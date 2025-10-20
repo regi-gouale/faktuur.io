@@ -1,11 +1,11 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const EmailTemplateType = z.enum([
-  "WELCOME",
-  "PASSWORD_RESET",
-  "EMAIL_VERIFICATION",
-  "INVOICE_REMINDER",
-  "PAYMENT_RECEIVED",
+  'WELCOME',
+  'PASSWORD_RESET',
+  'EMAIL_VERIFICATION',
+  'INVOICE_REMINDER',
+  'PAYMENT_RECEIVED',
 ]);
 
 export type EmailTemplate = z.infer<typeof EmailTemplateType>;
@@ -23,12 +23,9 @@ export interface EmailResponse {
 }
 
 export const sendEmailSchema = z.object({
-  to: z.string().email("Invalid recipient email"),
+  to: z.string().email('Invalid recipient email'),
   templateType: EmailTemplateType,
-  variables: z.record(
-    z.string(),
-    z.union([z.string(), z.number(), z.boolean()])
-  ),
+  variables: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])),
 });
 
 export type SendEmailRequest = z.infer<typeof sendEmailSchema>;

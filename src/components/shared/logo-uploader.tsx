@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
-import { ImageIcon, Link2, Upload, X } from "lucide-react";
-import Image from "next/image";
-import { useRef, useState } from "react";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
+import { ImageIcon, Link2, Upload, X } from 'lucide-react';
+import Image from 'next/image';
+import { useRef, useState } from 'react';
 
 interface LogoUploaderProps {
   value?: string;
@@ -16,9 +16,9 @@ interface LogoUploaderProps {
 }
 
 export function LogoUploader({ value, onChange, disabled }: LogoUploaderProps) {
-  const [logoUrl, setLogoUrl] = useState(value || "");
-  const [urlInput, setUrlInput] = useState("");
-  const [activeTab, setActiveTab] = useState<"upload" | "url">("upload");
+  const [logoUrl, setLogoUrl] = useState(value || '');
+  const [urlInput, setUrlInput] = useState('');
+  const [activeTab, setActiveTab] = useState<'upload' | 'url'>('upload');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,8 +26,8 @@ export function LogoUploader({ value, onChange, disabled }: LogoUploaderProps) {
     if (!file) return;
 
     // Vérification du type de fichier
-    if (!file.type.startsWith("image/")) {
-      alert("Veuillez sélectionner une image valide");
+    if (!file.type.startsWith('image/')) {
+      alert('Veuillez sélectionner une image valide');
       return;
     }
 
@@ -56,16 +56,16 @@ export function LogoUploader({ value, onChange, disabled }: LogoUploaderProps) {
       setLogoUrl(urlInput);
       onChange(urlInput);
     } catch {
-      alert("Veuillez entrer une URL valide");
+      alert('Veuillez entrer une URL valide');
     }
   };
 
   const handleRemove = () => {
-    setLogoUrl("");
-    setUrlInput("");
-    onChange("");
+    setLogoUrl('');
+    setUrlInput('');
+    onChange('');
     if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+      fileInputRef.current.value = '';
     }
   };
 
@@ -73,14 +73,14 @@ export function LogoUploader({ value, onChange, disabled }: LogoUploaderProps) {
     <div className="space-y-4">
       {/* Prévisualisation du logo */}
       {logoUrl && (
-        <div className="relative w-32 h-32 mx-auto">
-          <div className="relative w-full h-full rounded-lg border-2 border-dashed border-muted-foreground/25 overflow-hidden bg-muted/50">
+        <div className="relative mx-auto h-32 w-32">
+          <div className="border-muted-foreground/25 bg-muted/50 relative h-full w-full overflow-hidden rounded-lg border-2 border-dashed">
             <Image
               src={logoUrl}
               alt="Logo de l'organisation"
               fill
               className="object-contain p-2"
-              unoptimized={logoUrl.startsWith("data:")}
+              unoptimized={logoUrl.startsWith('data:')}
             />
           </div>
           <Button
@@ -100,16 +100,16 @@ export function LogoUploader({ value, onChange, disabled }: LogoUploaderProps) {
       {!logoUrl && (
         <Tabs
           value={activeTab}
-          onValueChange={(value) => setActiveTab(value as "upload" | "url")}
+          onValueChange={(value) => setActiveTab(value as 'upload' | 'url')}
           className="w-full"
         >
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="upload" disabled={disabled}>
-              <Upload className="h-4 w-4 mr-2" />
+              <Upload className="mr-2 h-4 w-4" />
               Télécharger
             </TabsTrigger>
             <TabsTrigger value="url" disabled={disabled}>
-              <Link2 className="h-4 w-4 mr-2" />
+              <Link2 className="mr-2 h-4 w-4" />
               URL
             </TabsTrigger>
           </TabsList>
@@ -129,21 +129,17 @@ export function LogoUploader({ value, onChange, disabled }: LogoUploaderProps) {
               <Label
                 htmlFor="logo-file-input"
                 className={cn(
-                  "flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer hover:bg-muted/50 transition-colors",
-                  disabled && "opacity-50 cursor-not-allowed"
+                  'hover:bg-muted/50 flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed transition-colors',
+                  disabled && 'cursor-not-allowed opacity-50'
                 )}
               >
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                  <ImageIcon className="h-8 w-8 mb-2 text-muted-foreground" />
-                  <p className="text-sm text-muted-foreground text-center px-4">
-                    <span className="font-semibold">
-                      Cliquez pour télécharger
-                    </span>{" "}
-                    ou glissez-déposez
+                  <ImageIcon className="text-muted-foreground mb-2 h-8 w-8" />
+                  <p className="text-muted-foreground px-4 text-center text-sm">
+                    <span className="font-semibold">Cliquez pour télécharger</span> ou
+                    glissez-déposez
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    PNG, JPG, SVG (max. 1MB)
-                  </p>
+                  <p className="text-muted-foreground mt-1 text-xs">PNG, JPG, SVG (max. 1MB)</p>
                 </div>
               </Label>
             </div>
@@ -161,7 +157,7 @@ export function LogoUploader({ value, onChange, disabled }: LogoUploaderProps) {
                   value={urlInput}
                   onChange={(e) => setUrlInput(e.target.value)}
                   onKeyDown={(e) => {
-                    if (e.key === "Enter") {
+                    if (e.key === 'Enter') {
                       e.preventDefault();
                       handleUrlSubmit();
                     }
@@ -176,9 +172,8 @@ export function LogoUploader({ value, onChange, disabled }: LogoUploaderProps) {
                   Valider
                 </Button>
               </div>
-              <p className="text-xs text-muted-foreground">
-                Entrez l&apos;URL complète de votre logo (doit commencer par
-                https://)
+              <p className="text-muted-foreground text-xs">
+                Entrez l&apos;URL complète de votre logo (doit commencer par https://)
               </p>
             </div>
           </TabsContent>
