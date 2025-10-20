@@ -1,13 +1,19 @@
+import { defaultQueueOptions } from '@/api/services/queue/redis';
+import { JobResult, PDFJobPayload, QueueName } from '@/api/services/queue/types';
 import { getQueueEnv } from '@/lib/env';
 import { Job, Worker } from 'bullmq';
-import { defaultQueueOptions } from '../redis';
-import { JobResult, PDFJobPayload, QueueName } from '../types';
 
 /**
  * Worker pour traiter les jobs de génération PDF
  */
 export class PDFWorker {
   private worker: Worker;
+  private metrics = {
+    pdfGenerated: 0,
+    pdfFailed: 0,
+    totalProcessingTime: 0,
+    lastProcessedAt: null as Date | null,
+  };
 
   constructor() {
     const env = getQueueEnv();
@@ -35,6 +41,7 @@ export class PDFWorker {
    */
   private async process(job: Job<PDFJobPayload>): Promise<JobResult> {
     const { type, documentId } = job.data;
+    const startTime = Date.now();
 
     console.log(`📄 Traitement du job PDF ${job.id} - Type: ${type}, Document: ${documentId}`);
 
@@ -44,6 +51,14 @@ export class PDFWorker {
 
       // Pour l'instant, simulation
       await this.simulatePDFGeneration();
+
+      // Mettre à jour les métriques
+      const processingTime = Date.now() - startTime;
+      this.metrics.pdfGenerated++;
+      this.metrics.totalProcessingTime += processingTime;
+      this.metrics.lastProcessedAt = new Date();
+
+      console.log(`✅ PDF généré (${processingTime}ms)`);
 
       return {
         success: true,
@@ -56,6 +71,11 @@ export class PDFWorker {
       };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      const processingTime = Date.now() - startTime;
+
+      this.metrics.pdfFailed++;
+      this.metrics.totalProcessingTime += processingTime;
+
       console.error(`❌ Erreur lors de la génération du PDF ${job.id}:`, errorMessage);
 
       return {
@@ -112,5 +132,30 @@ export class PDFWorker {
    */
   getWorker(): Worker {
     return this.worker;
+  }
+
+  /**
+   * Obtenir les métriques du worker
+   */
+  getMetrics() {
+    const avgProcessingTime =
+      this.metrics.pdfGenerated > 0
+        ? this.metrics.totalProcessingTime / this.metrics.pdfGenerated
+        : 0;
+
+    return {
+      pdfGenerated: this.metrics.pdfGenerated,
+      pdfFailed: this.metrics.pdfFailed,
+      totalProcessed: this.metrics.pdfGenerated + this.metrics.pdfFailed,
+      successRate:
+        this.metrics.pdfGenerated + this.metrics.pdfFailed > 0
+          ? (
+              (this.metrics.pdfGenerated / (this.metrics.pdfGenerated + this.metrics.pdfFailed)) *
+              100
+            ).toFixed(2) + '%'
+          : '0%',
+      avgProcessingTime: Math.round(avgProcessingTime),
+      lastProcessedAt: this.metrics.lastProcessedAt,
+    };
   }
 }

@@ -23,7 +23,11 @@ try {
   const env = getQueueEnv();
   console.log('✅ Configuration validée');
   console.log(`📊 Concurrency: ${env.QUEUE_CONCURRENCY}`);
-  console.log(`🔌 Redis: ${env.REDIS_HOST}:${env.REDIS_PORT}\n`);
+  console.log(`🔌 Redis: ${env.REDIS_HOST}:${env.REDIS_PORT}`);
+  if (env.REDIS_PASSWORD) {
+    console.log('🔐 Redis authentifié : ✓');
+  }
+  console.log();
 } catch (error) {
   console.error('❌ Erreur de configuration:', error);
   process.exit(1);
@@ -32,18 +36,33 @@ try {
 // Démarrer les workers
 const workerManager = getWorkerManager();
 
-// Gérer l'arrêt gracieux
-process.on('SIGTERM', async () => {
-  console.log('\n⚠️ Signal SIGTERM reçu, arrêt du worker...');
-  await workerManager.close();
-  process.exit(0);
-});
+/**
+ * Arrêt gracieux avec timeout de sécurité
+ */
+async function gracefulShutdown(signal: string) {
+  console.log(`\n⚠️  Signal ${signal} reçu, arrêt du worker...`);
+  console.log('🛑 Arrêt des workers...\n');
 
-process.on('SIGINT', async () => {
-  console.log('\n⚠️ Signal SIGINT reçu, arrêt du worker...');
-  await workerManager.close();
-  process.exit(0);
-});
+  const timeout = setTimeout(() => {
+    console.error("❌ Timeout lors de l'arrêt (10s), force kill");
+    process.exit(1);
+  }, 10000); // 10s max pour l'arrêt
+
+  try {
+    await workerManager.close();
+    clearTimeout(timeout);
+    console.log('✅ Tous les workers sont arrêtés proprement');
+    process.exit(0);
+  } catch (error) {
+    clearTimeout(timeout);
+    console.error("❌ Erreur lors de l'arrêt:", error);
+    process.exit(1);
+  }
+}
+
+// Gérer l'arrêt gracieux
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
 console.log('✅ Worker démarré et prêt à traiter des jobs');
 console.log('🛑 Appuyez sur Ctrl+C pour arrêter\n');

@@ -6,46 +6,64 @@ import pLimit from 'p-limit';
 import { UseSend } from 'usesend-js';
 
 let transporter: nodemailer.Transporter | null = null;
-let transporterConfig: ReturnType<typeof getEnv> | null = null;
+let transporterPromise: Promise<nodemailer.Transporter> | null = null;
 let usesendClient: InstanceType<typeof UseSend> | null = null;
+let usesendPromise: Promise<InstanceType<typeof UseSend>> | null = null;
 
-function getNodemailerTransporter(): nodemailer.Transporter {
+/**
+ * Obtenir le transporteur Nodemailer de manière thread-safe
+ * Utilise une Promise pour éviter les race conditions
+ */
+async function getNodemailerTransporter(): Promise<nodemailer.Transporter> {
   if (transporter) return transporter;
 
-  if (!transporterConfig) {
-    transporterConfig = getEnv(); // ← Cache config aussi
+  if (!transporterPromise) {
+    transporterPromise = (async () => {
+      const env = getEnv();
+
+      // Nodemailer configuration
+      const config = {
+        host: env.SMTP_HOST || 'localhost',
+        port: env.SMTP_PORT || 587,
+        secure: env.SMTP_PORT === 465,
+        ...(env.SMTP_USER
+          ? {
+              auth: {
+                user: env.SMTP_USER,
+                pass: env.SMTP_PASSWORD || '',
+              },
+            }
+          : {}),
+      };
+
+      transporter = nodemailer.createTransport(config);
+      return transporter;
+    })();
   }
 
-  // Nodemailer configuration
-  const config = {
-    host: transporterConfig.SMTP_HOST || 'localhost',
-    port: transporterConfig.SMTP_PORT || 587,
-    secure: transporterConfig.SMTP_PORT === 465,
-    ...(transporterConfig.SMTP_USER
-      ? {
-          auth: {
-            user: transporterConfig.SMTP_USER,
-            pass: transporterConfig.SMTP_PASSWORD || '',
-          },
-        }
-      : {}),
-  };
-
-  transporter = nodemailer.createTransport(config);
-  return transporter;
+  return transporterPromise;
 }
 
-function getUseSendClient(): InstanceType<typeof UseSend> {
+/**
+ * Obtenir le client UseSend de manière thread-safe
+ */
+async function getUseSendClient(): Promise<InstanceType<typeof UseSend>> {
   if (usesendClient) return usesendClient;
 
-  const env = getEnv();
+  if (!usesendPromise) {
+    usesendPromise = (async () => {
+      const env = getEnv();
 
-  if (!env.USESEND_API_KEY) {
-    throw new Error('USESEND_API_KEY is not configured');
+      if (!env.USESEND_API_KEY) {
+        throw new Error('USESEND_API_KEY is not configured');
+      }
+
+      usesendClient = new UseSend(env.USESEND_API_KEY);
+      return usesendClient;
+    })();
   }
 
-  usesendClient = new UseSend(env.USESEND_API_KEY);
-  return usesendClient;
+  return usesendPromise;
 }
 
 export async function sendEmail(payload: EmailPayload): Promise<EmailResponse> {
@@ -80,7 +98,7 @@ async function sendEmailViaNodemailer(
   template: { subject: string; html: string; text: string },
   env: ReturnType<typeof getEnv>
 ): Promise<EmailResponse> {
-  const transporter = getNodemailerTransporter();
+  const transporter = await getNodemailerTransporter();
 
   const result = await transporter.sendMail({
     from: env.EMAIL_FROM,
@@ -101,7 +119,7 @@ async function sendEmailViaUseSend(
   template: { subject: string; html: string; text: string },
   env: ReturnType<typeof getEnv>
 ): Promise<EmailResponse> {
-  const usesend = getUseSendClient();
+  const usesend = await getUseSendClient();
 
   const result = await usesend.emails.send({
     from: env.EMAIL_FROM,

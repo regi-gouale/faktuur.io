@@ -1,14 +1,21 @@
+import { sendEmail } from '@/api/services/email';
+import { defaultQueueOptions } from '@/api/services/queue/redis';
+import { EmailJobPayload, JobResult, QueueName } from '@/api/services/queue/types';
 import { getQueueEnv } from '@/lib/env';
+import { EmailTemplate, sendEmailSchema } from '@/lib/schemas/email';
 import { Job, Worker } from 'bullmq';
-import { sendEmail } from '../../email';
-import { defaultQueueOptions } from '../redis';
-import { EmailJobPayload, JobResult, QueueName } from '../types';
 
 /**
  * Worker pour traiter les jobs d'email
  */
 export class EmailWorker {
   private worker: Worker;
+  private metrics = {
+    emailsSent: 0,
+    emailsFailed: 0,
+    totalProcessingTime: 0,
+    lastProcessedAt: null as Date | null,
+  };
 
   constructor() {
     const env = getQueueEnv();
@@ -36,6 +43,7 @@ export class EmailWorker {
    */
   private async process(job: Job<EmailJobPayload>): Promise<JobResult> {
     const { to, template, data } = job.data;
+    const startTime = Date.now();
 
     console.log(`📧 Traitement du job email ${job.id} - Template: ${template}`);
 
@@ -43,16 +51,29 @@ export class EmailWorker {
       // Convertir le destinataire en string si c'est un tableau
       const recipient = Array.isArray(to) ? to[0] : to;
 
-      const result = await sendEmail({
+      // Construire le payload email
+      const emailPayload = {
         to: recipient,
-        templateType: template as
-          | 'WELCOME'
-          | 'PASSWORD_RESET'
-          | 'EMAIL_VERIFICATION'
-          | 'INVOICE_REMINDER'
-          | 'PAYMENT_RECEIVED',
+        templateType: template as EmailTemplate,
         variables: data as Record<string, string | number | boolean>,
-      });
+      };
+
+      // Valider le payload avec Zod
+      const validated = sendEmailSchema.safeParse(emailPayload);
+      if (!validated.success) {
+        throw new Error(`Invalid email payload: ${validated.error.message}`);
+      }
+
+      // Envoyer l'email avec le payload validé
+      const result = await sendEmail(validated.data);
+
+      // Mettre à jour les métriques
+      const processingTime = Date.now() - startTime;
+      this.metrics.emailsSent++;
+      this.metrics.totalProcessingTime += processingTime;
+      this.metrics.lastProcessedAt = new Date();
+
+      console.log(`✅ Email envoyé (${processingTime}ms)`);
 
       return {
         success: true,
@@ -60,6 +81,11 @@ export class EmailWorker {
       };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      const processingTime = Date.now() - startTime;
+
+      this.metrics.emailsFailed++;
+      this.metrics.totalProcessingTime += processingTime;
+
       console.error(`❌ Erreur lors de l'envoi de l'email ${job.id}:`, errorMessage);
 
       return {
@@ -107,5 +133,28 @@ export class EmailWorker {
    */
   getWorker(): Worker {
     return this.worker;
+  }
+
+  /**
+   * Obtenir les métriques du worker
+   */
+  getMetrics() {
+    const avgProcessingTime =
+      this.metrics.emailsSent > 0 ? this.metrics.totalProcessingTime / this.metrics.emailsSent : 0;
+
+    return {
+      emailsSent: this.metrics.emailsSent,
+      emailsFailed: this.metrics.emailsFailed,
+      totalProcessed: this.metrics.emailsSent + this.metrics.emailsFailed,
+      successRate:
+        this.metrics.emailsSent + this.metrics.emailsFailed > 0
+          ? (
+              (this.metrics.emailsSent / (this.metrics.emailsSent + this.metrics.emailsFailed)) *
+              100
+            ).toFixed(2) + '%'
+          : '0%',
+      avgProcessingTime: Math.round(avgProcessingTime),
+      lastProcessedAt: this.metrics.lastProcessedAt,
+    };
   }
 }
