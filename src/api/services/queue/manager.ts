@@ -1,5 +1,5 @@
 import { Queue, QueueOptions } from 'bullmq';
-import { defaultQueueOptions } from './redis';
+import { getDefaultQueueOptions } from './redis';
 import { JobOptions, JobPayload, QueueName } from './types';
 
 /**
@@ -18,7 +18,7 @@ export class QueueManager {
   getQueue(name: QueueName, options?: Partial<QueueOptions>): Queue {
     if (!this.queues.has(name)) {
       const queue = new Queue(name, {
-        ...defaultQueueOptions,
+        ...getDefaultQueueOptions(),
         ...options,
         defaultJobOptions: {
           attempts: 3,

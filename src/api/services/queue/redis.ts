@@ -12,6 +12,7 @@ export function createRedisConnection(): Redis {
     return new Redis(env.REDIS_URL, {
       maxRetriesPerRequest: null,
       enableReadyCheck: false,
+      lazyConnect: true, // Ne pas se connecter immédiatement
     });
   }
 
@@ -22,12 +23,16 @@ export function createRedisConnection(): Redis {
     password: env.REDIS_PASSWORD,
     maxRetriesPerRequest: null,
     enableReadyCheck: false,
+    lazyConnect: true, // Ne pas se connecter immédiatement
   });
 }
 
 /**
  * Options par défaut pour BullMQ
+ * Lazy initialization pour éviter la connexion pendant le build
  */
-export const defaultQueueOptions = {
-  connection: createRedisConnection(),
-};
+export function getDefaultQueueOptions() {
+  return {
+    connection: createRedisConnection(),
+  };
+}

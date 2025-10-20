@@ -28,6 +28,7 @@ WORKDIR /app
 # Copier node_modules depuis deps
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/prisma ./prisma
+COPY --from=deps /app/node_modules/.prisma ./node_modules/.prisma
 
 # Copier le reste du code
 COPY . .
@@ -39,6 +40,10 @@ RUN pnpm prisma generate
 # Build Next.js
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
+# Variables fictives pour éviter les erreurs de connexion pendant le build
+ENV REDIS_HOST=localhost
+ENV REDIS_PORT=6379
+ENV DATABASE_URL=file:./dev.db
 
 RUN pnpm build
 
@@ -53,10 +58,9 @@ RUN adduser --system --uid 1001 nextjs
 
 # Installer pnpm et les dépendances système
 RUN corepack enable && corepack prepare pnpm@latest --activate
-RUN apk add --no-cache curl redis
+RUN apk add --no-cache curl
 
 # Copier les fichiers nécessaires depuis le builder
-COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/pnpm-lock.yaml ./pnpm-lock.yaml
 
@@ -64,14 +68,17 @@ COPY --from=builder /app/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Copier Prisma
+# Copier Prisma (généré dans deps)
+COPY --from=deps /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=deps /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 
 # Copier le worker et les scripts
 COPY --from=builder /app/src ./src
 COPY --from=builder /app/scripts ./scripts
+
+# Copier le dossier public s'il existe
+COPY --from=builder /app/public ./public
 
 # Variables d'environnement
 ENV NODE_ENV=production
