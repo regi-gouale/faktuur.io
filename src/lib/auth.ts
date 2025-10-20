@@ -28,4 +28,13 @@ export const auth = betterAuth({
     },
     expiresIn: 7 * 24 * 60 * 60,
   },
+  user: {
+    additionalFields: {
+      isAdmin: {
+        type: 'boolean',
+        defaultValue: false,
+        required: false,
+      },
+    },
+  },
 });

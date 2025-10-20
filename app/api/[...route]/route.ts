@@ -1,6 +1,10 @@
 import emailRouter from '@/api/routes/email';
+import jobsRouter from '@/api/routes/jobs';
+import { createQueueDashboard } from '@/api/routes/queue-dashboard';
+import queueStatsRouter from '@/api/routes/queue-stats';
 import { auth } from '@/lib/auth';
 import { getUserFirstOrganizationSlug } from '@/lib/dal/organization';
+import { requireAdmin } from '@/lib/middleware/admin';
 import { Hono } from 'hono';
 import { handle } from 'hono/vercel';
 
@@ -31,6 +35,17 @@ app
     return next();
   })
   .route('/email', emailRouter)
+  .route('/jobs', jobsRouter);
+
+// Routes Admin - Protégées par le middleware requireAdmin
+const adminRoutes = new Hono()
+  .use('*', requireAdmin) // Toutes les routes /api/admin/* nécessitent les droits admin
+  .route('/queues', createQueueDashboard().registerPlugin())
+  .route('/queue-stats', queueStatsRouter);
+
+app.route('/admin', adminRoutes);
+
+app
   .get('/session', async (c) => {
     const session = c.get('session');
     const user = c.get('user');
