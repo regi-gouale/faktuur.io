@@ -22,9 +22,9 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 interface AdminJobDetailPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 // Fonction pour obtenir le badge de statut
@@ -70,7 +70,7 @@ function getTypeBadge(type: string) {
 }
 
 export default async function AdminJobDetailPage({ params }: AdminJobDetailPageProps) {
-  const { id } = params;
+  const { id } = await params;
 
   // Récupérer la tâche
   const job = await getJobById(id);

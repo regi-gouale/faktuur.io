@@ -1,5 +1,6 @@
 import { auth } from '@/lib/auth';
 import { Context, Next } from 'hono';
+import prisma from '@/lib/prisma';
 
 /**
  * Middleware pour vérifier que l'utilisateur est administrateur
@@ -30,9 +31,6 @@ export async function requireAdmin(c: Context, next: Next) {
  * Vérifier si un utilisateur est admin (pour les Server Components)
  */
 export async function isUserAdmin(userId: string): Promise<boolean> {
-  const { PrismaClient } = await import('@/generated/prisma');
-  const prisma = new PrismaClient();
-
   try {
     const user = await prisma.user.findUnique({
       where: { id: userId },

@@ -48,6 +48,14 @@ export class EmailWorker {
     console.log(`📧 Traitement du job email ${job.id} - Template: ${template}`);
 
     try {
+      // Valider que le destinataire n'est pas un tableau de plusieurs éléments
+      if (Array.isArray(to)) {
+        if (to.length !== 1) {
+          throw new Error(
+            `EmailWorker does not support multiple recipients. 'to' array must contain exactly one recipient, but got ${to.length}: [${to.join(', ')}]`
+          );
+        }
+      }
       // Convertir le destinataire en string si c'est un tableau
       const recipient = Array.isArray(to) ? to[0] : to;
 
