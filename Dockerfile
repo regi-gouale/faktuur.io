@@ -28,10 +28,12 @@ WORKDIR /app
 # Copier node_modules depuis deps
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/prisma ./prisma
-COPY --from=deps /app/node_modules/.prisma ./node_modules/.prisma
 
 # Copier le reste du code
 COPY . .
+
+# S'assurer que le dossier public existe (même vide)
+RUN mkdir -p public
 
 # Générer le client Prisma (au cas où)
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -60,6 +62,9 @@ RUN adduser --system --uid 1001 nextjs
 RUN corepack enable && corepack prepare pnpm@latest --activate
 RUN apk add --no-cache curl
 
+# Copier les dépendances depuis le builder
+COPY --from=builder /app/node_modules ./node_modules
+
 # Copier les fichiers nécessaires depuis le builder
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/pnpm-lock.yaml ./pnpm-lock.yaml
@@ -68,9 +73,7 @@ COPY --from=builder /app/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Copier Prisma (généré dans deps)
-COPY --from=deps /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=deps /app/node_modules/@prisma ./node_modules/@prisma
+# Copier Prisma et le schéma
 COPY --from=builder /app/prisma ./prisma
 
 # Copier le worker et les scripts

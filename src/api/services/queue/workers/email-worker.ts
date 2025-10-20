@@ -1,5 +1,5 @@
 import { sendEmail } from '@/api/services/email';
-import { defaultQueueOptions } from '@/api/services/queue/redis';
+import { getDefaultQueueOptions } from '@/api/services/queue/redis';
 import { EmailJobPayload, JobResult, QueueName } from '@/api/services/queue/types';
 import { getQueueEnv } from '@/lib/env';
 import { EmailTemplate, sendEmailSchema } from '@/lib/schemas/email';
@@ -26,7 +26,7 @@ export class EmailWorker {
         return await this.process(job);
       },
       {
-        ...defaultQueueOptions,
+        ...getDefaultQueueOptions(),
         concurrency: env.QUEUE_CONCURRENCY || 5,
         limiter: {
           max: 10, // Maximum 10 jobs

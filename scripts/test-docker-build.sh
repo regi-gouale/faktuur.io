@@ -83,7 +83,7 @@ check_file() {
 check_file "/app/server.js"
 check_file "/app/.next/static"
 check_file "/app/prisma/schema.prisma"
-check_file "/app/node_modules/.prisma"
+check_file "/app/node_modules"
 check_file "/app/src"
 check_file "/app/package.json"
 echo ""

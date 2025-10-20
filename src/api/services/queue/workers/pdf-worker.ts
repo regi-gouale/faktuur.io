@@ -1,4 +1,4 @@
-import { defaultQueueOptions } from '@/api/services/queue/redis';
+import { getDefaultQueueOptions } from '@/api/services/queue/redis';
 import { JobResult, PDFJobPayload, QueueName } from '@/api/services/queue/types';
 import { getQueueEnv } from '@/lib/env';
 import { Job, Worker } from 'bullmq';
@@ -24,7 +24,7 @@ export class PDFWorker {
         return await this.process(job);
       },
       {
-        ...defaultQueueOptions,
+        ...getDefaultQueueOptions(),
         concurrency: env.QUEUE_CONCURRENCY || 5,
         limiter: {
           max: 5, // Maximum 5 PDFs
