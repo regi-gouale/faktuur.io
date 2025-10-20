@@ -1,4 +1,5 @@
 import emailRouter from '@/api/routes/email';
+import healthRouter from '@/api/routes/health';
 import jobsRouter from '@/api/routes/jobs';
 import { createQueueDashboard } from '@/api/routes/queue-dashboard';
 import queueStatsRouter from '@/api/routes/queue-stats';
@@ -34,6 +35,7 @@ app
     c.set('session', session.session);
     return next();
   })
+  .route('/health', healthRouter)
   .route('/email', emailRouter)
   .route('/jobs', jobsRouter);
 

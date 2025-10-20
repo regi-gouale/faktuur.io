@@ -1,0 +1,87 @@
+services:
+  # Service 1 : Application Next.js
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      # Database
+      - DATABASE_URL=${DATABASE_URL}
+
+      # Authentication (Better Auth)
+      - BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
+      - BETTER_AUTH_URL=${BETTER_AUTH_URL}
+
+      # Email Configuration
+      - EMAIL_FROM=${EMAIL_FROM}
+      - EMAIL_PROVIDER=${EMAIL_PROVIDER}
+      - USESEND_API_KEY=${USESEND_API_KEY}
+
+      # SMTP (si EMAIL_PROVIDER=nodemailer)
+      - SMTP_HOST=${SMTP_HOST:-}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_USER=${SMTP_USER:-}
+      - SMTP_PASSWORD=${SMTP_PASSWORD:-}
+
+      # Redis / Queue
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - QUEUE_CONCURRENCY=${QUEUE_CONCURRENCY:-5}
+
+      # Node Environment
+      - NODE_ENV=production
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:3000/api/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    depends_on:
+      - worker
+
+  # Service 2 : BullMQ Worker
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      # Database
+      - DATABASE_URL=${DATABASE_URL}
+
+      # Authentication (Better Auth)
+      - BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
+      - BETTER_AUTH_URL=${BETTER_AUTH_URL}
+
+      # Email Configuration
+      - EMAIL_FROM=${EMAIL_FROM}
+      - EMAIL_PROVIDER=${EMAIL_PROVIDER}
+      - USESEND_API_KEY=${USESEND_API_KEY}
+
+      # SMTP (si EMAIL_PROVIDER=nodemailer)
+      - SMTP_HOST=${SMTP_HOST:-}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_USER=${SMTP_USER:-}
+      - SMTP_PASSWORD=${SMTP_PASSWORD:-}
+
+      # Redis / Queue
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - QUEUE_CONCURRENCY=${QUEUE_CONCURRENCY:-5}
+
+      # Node Environment
+      - NODE_ENV=production
+    command: pnpm queue:worker
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'pnpm', 'redis-cli', '-h', '${REDIS_HOST}', 'ping']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+networks:
+  default:
+    name: faktuur-network
